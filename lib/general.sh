@@ -594,6 +594,7 @@ prepare_host()
 	for toolchain in ${toolchains[@]}; do
 		download_toolchain "$toolchain"
 	done
+	download_go
 
 	rm -rf $SRC/cache/toolchains/*.tar.xz $SRC/cache/toolchains/*.tar.xz.asc
 	local existing_dirs=( $(ls -1 $SRC/cache/toolchains) )
@@ -668,6 +669,20 @@ download_toolchain()
 		display_alert "Download complete" "" "info"
 	else
 		display_alert "Verification failed" "" "wrn"
+	fi
+}
+download_go {
+	if [[ ! -d $SRC/cache/software ]]; then
+		mkdir -p $SRC/cache/software
+	fi
+	cd $SRC/cache/software
+	if [[ ! -d $SRC/cache/software/go ]]; then
+		display_alert "Downloading"
+		curl -Lf --progress-bar https://redirector.gvt1.com/edgedl/go/go1.9.2.linux-arm64.tar.gz -o go1.9.2.linux-arm64.tar.gz
+		display_alert "Extracting"
+		tar zxf go1.9.2.linux-arm64.tar.gz
+		rm go1.9.2.linux-arm64.tar.gz
+		display_alert "Download complete" "Golang" "info"
 	fi
 }
 

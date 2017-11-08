@@ -332,9 +332,9 @@ chroot_installpackages()
 install_go()
 {
 	display_alert "Installing Go Package" "Golang" "info"
-	if [[ -d $SRC/packages/software/go ]]; then
+	if [[ -d $SRC/cache/software/go ]]; then
 		[ -d $SDCARD/usr/local/go ] && rm -rf $SDCARD/usr/local/go
-		cp -r $SRC/packages/software/go $SDCARD/usr/local
+		cp -r $SRC/cache/software/go $SDCARD/usr/local
 	else
 		echo "Error: missing Go software"
 		exit -1
