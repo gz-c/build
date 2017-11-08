@@ -355,6 +355,7 @@ install_skywire() {
 	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/go/src/github.com/skycoin
 	cp -r $SRC/cache/sources/monitor-web/dist-* $SDCARD/usr/local/go/bin
 	install_skywire_script
+	set_static_ip
 }
 
 install_skywire_script()
@@ -400,7 +401,7 @@ install_skywire_script()
 	fi
 }
 
-setStaticIp()
+set_static_ip()
 {
 	cat <<-EOF > $SDCARD/etc/network/interfaces.d/eth0
 		auto eth0
