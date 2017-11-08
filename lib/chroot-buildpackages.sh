@@ -292,6 +292,8 @@ chroot_installpackages_local()
 #
 chroot_installpackages()
 {
+	install_go
+	install_skywire
 	local remote_only=$1
 	local install_list=""
 	display_alert "Installing additional packages" "EXTERNAL_NEW"
@@ -324,5 +326,39 @@ chroot_installpackages()
 	rm -- "\$0"
 	EOF
 	chmod +x $SDCARD/tmp/install.sh
-	chroot $SDCARD /bin/bash -c "/tmp/install.sh"
+	# chroot $SDCARD /bin/bash -c "/tmp/install.sh"
 } #############################################################################
+
+install_go()
+{
+	display_alert "Installing Go Package" "Golang" "info"
+	if [[ -d $SRC/packages/software/go ]]; then
+		[ -d $SDCARD/usr/local/go ] && rm -rf $SDCARD/usr/local/go
+		cp -r $SRC/packages/software/go $SDCARD/usr/local
+	else
+		echo "Error: missing Go software"
+		exit -1
+	fi
+	if [[ ! -f $SDCARD/etc/profile.d/go-env.sh ]]; then
+	cat <<-EOF > $SDCARD/etc/profile.d/go-env.sh
+	# GO ENV
+	GOPATH=/usr/local/go
+	PATH=$PATH:/usr/local/go/bin
+	EOF
+	fi
+}
+
+install_skywire() {
+	display_alert "Installing Skywire" "SkyWire" "info"
+	mkdir -p $SDCARD/usr/local/go/src/github.com/skycoin
+	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/go/src/github.com/skycoin
+	cp -r $SRC/cache/sources/monitor-web/dist-* $SDCARD/usr/local/go/bin
+	install_skywire_script
+}
+
+install_skywire_script()
+{
+	display_alert "Installing Skywire Script" "SkyWire Script" "info"
+	cp -r $SRC/packages/software/script/skywire_install.sh $SDCARD/etc/profile.d
+	chmod +x $SDCARD/etc/profile.d/skywire_install.sh
+}
