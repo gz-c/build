@@ -231,6 +231,16 @@ if [[ $KERNEL_ONLY != yes && -z $BUILD_DESKTOP ]]; then
 	[[ -z $BUILD_DESKTOP ]] && exit_with_error "No option selected"
 fi
 
+if [[ $KERNEL_ONLY != yes && -z $BUILD_DESKTOP ]]; then
+	options=()
+	options+=("yes" "Manager")
+	options+=("no" "Node")
+	IS_MANAGER=$(dialog --stdout --title "Choose image type" --backtitle "$backtitle" --no-tags --menu "Select the build manager or node image" \
+			$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
+	unset options
+	[[ -z $IS_MANAGER ]] && exit_with_error "No option selected"
+fi
+
 source $SRC/lib/configuration.sh
 
 # optimize build time with 100% CPU usage
