@@ -372,23 +372,8 @@ install_skywire_script()
 install_manager()
 {
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
-	cat <<-EOF > $SDCARD/etc/profile.d/manager_install.sh
-			#!/bin/bash
-			# SkyWire Manager Install
-			Manager_Pid_FILE=manager.pid
-			echo "kill $(cat ${Manager_Pid_FILE})"
-			pkill -F "${Manager_Pid_FILE}"
-			type "manager" && type "discovery" && type "socksc" && type "sockss" && type "sshc" && type "sshs" > /dev/null || {
-					cd /usr/local/go/src/github.com/skycoin/skywire/cmd
-					go install ./...
-			}
-			echo "Starting SkyWire Manager"
-			nohup manager -web-dir /usr/local/go/bin/dist-manager &
-			echo $! > "${Manager_Pid_FILE}"
-			cat "${Manager_Pid_FILE}"
-			echo "SkyWire Manager Done"
-		EOF
-		chmod +x $SDCARD/etc/profile.d/manager_install.sh
+	cp -r $SRC/packages/script/manager_install.sh $SDCARD/etc/profile.d/manager_install.sh
+	chmod +x $SDCARD/etc/profile.d/manager_install.sh
 }
 
 install_node()
@@ -410,7 +395,7 @@ install_node()
 			cat "${Node_Pid_FILE}"
 			echo "SkyWire Node Done"
 		EOF
-		chmod +x $SDCARD/etc/profile.d/node_install.sh
+	chmod +x $SDCARD/etc/profile.d/node_install.sh
 }
 
 set_static_ip()
