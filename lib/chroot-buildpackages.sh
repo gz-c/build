@@ -349,7 +349,6 @@ install_go()
 }
 
 install_skywire() {
-	display_alert "Is Manager?" "$IS_MANAGER" "info"
 	display_alert "Installing Skywire" "SkyWire" "info"
 	mkdir -p $SDCARD/usr/local/go/src/github.com/skycoin
 	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/go/src/github.com/skycoin
@@ -359,7 +358,13 @@ install_skywire() {
 
 install_skywire_script()
 {
+	display_alert "Is Manager?" "$IS_MANAGER" "info"
 	display_alert "Installing Skywire Script" "SkyWire Script" "info"
-	cp -r $SRC/packages/script/skywire_install.sh $SDCARD/etc/profile.d
-	chmod +x $SDCARD/etc/profile.d/skywire_install.sh
+	if [[ $KERNEL_ONLY == yes ]]; then
+		cp -r $SRC/packages/script/manager_install.sh $SDCARD/etc/profile.d
+		chmod +x $SDCARD/etc/profile.d/manager_install.sh
+	else
+		cp -r $SRC/packages/script/node_install.sh $SDCARD/etc/profile.d
+		chmod +x $SDCARD/etc/profile.d/node_install.sh
+	fi
 }

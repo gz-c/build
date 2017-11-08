@@ -7,6 +7,8 @@ type "manager" && type "discovery" && type "socksc" && type "sockss" && type "ss
 		cd ${GOPATH}/src/github.com/skycoin/skywire/cmd
 		go install ./...
 }
+echo "Starting SkyWire Manager"
 nohup manager -web-dir ${GOPATH}/bin/dist-manager &
 echo $! > "${Manager_Pid_FILE}"
 cat "${Manager_Pid_FILE}"
+echo "SkyWire Manager Done"
