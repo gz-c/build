@@ -671,7 +671,7 @@ download_toolchain()
 		display_alert "Verification failed" "" "wrn"
 	fi
 }
-download_go {
+download_go() {
 	if [[ ! -d $SRC/cache/software ]]; then
 		mkdir -p $SRC/cache/software
 	fi
