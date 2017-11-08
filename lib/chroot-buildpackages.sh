@@ -360,7 +360,7 @@ install_skywire_script()
 {
 	display_alert "Is Manager?" "$IS_MANAGER" "info"
 	display_alert "Installing Skywire Script" "SkyWire Script" "info"
-	if [[ $KERNEL_ONLY == yes ]]; then
+	if [[ $IS_MANAGER == yes ]]; then
 		cp -r $SRC/packages/script/manager_install.sh $SDCARD/etc/profile.d
 		chmod +x $SDCARD/etc/profile.d/manager_install.sh
 	else
