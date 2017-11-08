@@ -349,7 +349,6 @@ install_go()
 }
 
 install_skywire() {
-	display_alert "Test Form" "$NETWORKCONFIG" "info"
 	display_alert "Installing Skywire" "SkyWire" "info"
 	mkdir -p $SDCARD/usr/local/go/src/github.com/skycoin
 	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/go/src/github.com/skycoin
@@ -360,7 +359,6 @@ install_skywire() {
 
 install_skywire_script()
 {
-	display_alert "Is Manager?" "$IS_MANAGER" "info"
 	display_alert "Installing Skywire Script" "SkyWire Script" "info"
 	if [[ $IS_MANAGER == yes ]]; then
 		cat <<-EOF > $SDCARD/etc/profile.d/manager_install.sh
