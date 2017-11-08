@@ -403,18 +403,19 @@ set_static_ip()
 	cat <<-EOF > $SDCARD/etc/network/interfaces.d/eth0
 		auto eth0
     iface eth0 inet static
-        address $NETWORK_ADDRESS
-        netmask $NETWORK_NETMASK
-        gateway $NETWORK_GATEWAY
+        address $NETWORKCONFIG[0]
+        netmask $NETWORKCONFIG[1]
+        gateway $NETWORKCONFIG[2]
 	EOF
 }
 
 set_auto_login()
 {
+	display_alert "Setting Auto Login" "Auto Login" "info"
 	mkdir -p /etc/systemd/system/getty@tty1.service.d
-	cat <<-EOF > /etc/systemd/system/getty@tty1.service.d/autologin.conf
+	cat << _EOF_ > /etc/systemd/system/getty@tty1.service.d/autologin.conf
 		[Service]
 		ExecStart=
 		ExecStart=-/sbin/agetty --autologin root %I
-	EOF
+	_EOF_
 }
