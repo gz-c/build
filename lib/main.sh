@@ -241,15 +241,21 @@ if [[ $KERNEL_ONLY != yes ]]; then
 	[[ -z $IS_MANAGER ]] && exit_with_error "No option selected"
 fi
 
+if [[ $IS_MANAGER != yes ]]; then
+	MANAGER_ADDRESS=""
+	MANAGER_CONFIG=$(dialog --stdout --title "Edit Network Config" --backtitle "$backtitle" --no-tags --form "Enter the parameters you need" $TTY_Y $TTY_X $(($TTY_Y - 8)) \
+			"Manger Address:"	3 1 "$MANAGER_ADDRESS"		3 15 15 0)
+	[[ -z $IS_MANAGER ]] && exit_with_error "No option selected"
+fi
+
 if [[ $KERNEL_ONLY != yes ]]; then
 	NETWORK_ADDRESS=""
 	NETWORK_NETMASK=""
 	NETWORK_GATEWAY=""
-	NETWORKCONFIG=$(dialog --stdout --title "Input Network Config" --backtitle "$backtitle" --no-tags --form \
-			$TTY_Y $TTY_X $(($TTY_Y - 8)) \
-			"Address:"				1 1 "$NETWORK_ADDRESS"				1 15 15 0 \
-			"Netmask:"			2 1 "$NETWORK_NETMASK"	2 15 15 0 \
-			"Gateway:"			3 1 "$NETWORK_GATEWAY"			3 15 15 0)
+	NETWORKCONFIG=$(dialog --stdout --title "Edit Network Config" --backtitle "$backtitle" --no-tags --form "Enter the parameters you need" $TTY_Y $TTY_X $(($TTY_Y - 8)) \
+			"Address:"	1 1 "$NETWORK_ADDRESS"		1 15 15 0 \
+			"Netmask:"	2 1 "$NETWORK_NETMASK"		2 15 15 0 \
+			"Gateway:"	3 1 "$NETWORK_GATEWAY"		3 15 15 0)
 	[[ -z $IS_MANAGER ]] && exit_with_error "No option selected"
 fi
 source $SRC/lib/configuration.sh

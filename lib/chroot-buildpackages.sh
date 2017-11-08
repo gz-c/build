@@ -362,10 +362,51 @@ install_skywire_script()
 	display_alert "Is Manager?" "$IS_MANAGER" "info"
 	display_alert "Installing Skywire Script" "SkyWire Script" "info"
 	if [[ $IS_MANAGER == yes ]]; then
-		cp -r $SRC/packages/script/manager_install.sh $SDCARD/etc/profile.d
+		cat <<-EOF > $SDCARD/etc/profile.d/manager_install.sh
+			#!/bin/bash
+			# SkyWire Manager Install
+			Manager_Pid_FILE=manager.pid
+			echo "kill $(cat ${Manager_Pid_FILE})"
+			pkill -F "${Manager_Pid_FILE}"
+			type "manager" && type "discovery" && type "socksc" && type "sockss" && type "sshc" && type "sshs" > /dev/null || {
+					cd ${GOPATH}/src/github.com/skycoin/skywire/cmd
+					go install ./...
+			}
+			echo "Starting SkyWire Manager"
+			nohup manager -web-dir ${GOPATH}/bin/dist-manager &
+			echo $! > "${Manager_Pid_FILE}"
+			cat "${Manager_Pid_FILE}"
+			echo "SkyWire Manager Done"
+		EOF
 		chmod +x $SDCARD/etc/profile.d/manager_install.sh
 	else
-		cp -r $SRC/packages/script/node_install.sh $SDCARD/etc/profile.d
+		cat <<-EOF > $SDCARD/etc/profile.d/node_install.sh
+			#!/bin/bash
+			# SkyWire Install
+			Node_Pid_FILE=node.pid
+			echo "kill $(cat ${Node_Pid_FILE})"
+			pkill -F "${Node_Pid_FILE}"
+			type "manager" && type "discovery" && type "socksc" && type "sockss" && type "sshc" && type "sshs" > /dev/null || {
+					cd ${GOPATH}/src/github.com/skycoin/skywire/cmd
+					go install ./...
+			}
+			echo "Starting SkyWire Node"
+			node -connect-manager -manager-address $MANAGER_ADDRESS:5998 -discovery-address www.yiqishare.com:5999 -address :5000 &
+			echo $! > "${Node_Pid_FILE}"
+			cat "${Node_Pid_FILE}"
+			echo "SkyWire Node Done"
+		EOF
 		chmod +x $SDCARD/etc/profile.d/node_install.sh
 	fi
+}
+
+setStaticIp()
+{
+	cat <<-EOF > $SDCARD/etc/network/interfaces.d/eth0
+		auto eth0
+    iface eth0 inet static
+        address $NETWORK_ADDRESS
+        netmask $NETWORK_NETMASK
+        gateway $NETWORK_GATEWAY
+	EOF
 }
