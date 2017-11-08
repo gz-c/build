@@ -361,6 +361,7 @@ install_skywire() {
 install_skywire_script()
 {
 	display_alert "Installing Skywire Script" "SkyWire Script" "info"
+	display_alert "Is Manager" "$IS_MANAGER" "info"
 	if [[ $IS_MANAGER == yes ]]; then
 		install_manager
 	else
@@ -370,6 +371,7 @@ install_skywire_script()
 
 install_manager()
 {
+	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
 	cat <<-EOF > $SDCARD/etc/profile.d/manager_install.sh
 			#!/bin/bash
 			# SkyWire Manager Install
@@ -391,6 +393,7 @@ install_manager()
 
 install_node()
 {
+	display_alert "Installing Skywire Node" "SkyWire Node" "info"
 	cat <<-EOF > $SDCARD/etc/profile.d/node_install.sh
 			#!/bin/bash
 			# SkyWire Install
