@@ -413,9 +413,9 @@ set_auto_login()
 {
 	display_alert "Setting Auto Login" "Auto Login" "info"
 	mkdir -p /etc/systemd/system/getty@tty1.service.d
-	cat << _EOF_ > /etc/systemd/system/getty@tty1.service.d/autologin.conf
+	cat <<-EOF > /etc/systemd/system/getty@tty1.service.d/autologin.conf
 		[Service]
 		ExecStart=
 		ExecStart=-/sbin/agetty --autologin root %I
-	_EOF_
+	EOF
 }
