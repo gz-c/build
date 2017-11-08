@@ -245,13 +245,11 @@ if [[ $KERNEL_ONLY != yes ]]; then
 	NETWORK_ADDRESS=""
 	NETWORK_NETMASK=""
 	NETWORK_GATEWAY=""
-	options=()
-	options+=("address:",1 1 "$NETWORK_ADDRESS" 1 15 15 0)
-	options+=("netmask:",2 1 "$NETWORK_NETMASK" 2 15 15 0)
-	options+=("gateway",3 1 "$NETWORK_GATEWAY" 3 15 15 0)
-	NETWORKCONFIG=$(dialog --stdout --title "Choose image type" --backtitle "$backtitle" --no-tags --form "Input Network Config" \
-			$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-	unset options
+	NETWORKCONFIG=$(dialog --stdout --title "Input Network Config" --backtitle "$backtitle" --no-tags --form \
+			$TTY_Y $TTY_X $(($TTY_Y - 8)) \
+			"Address:"				1 1 "$NETWORK_ADDRESS"				1 15 15 0 \
+			"Netmask:"			2 1 "$NETWORK_NETMASK"	2 15 15 0 \
+			"Gateway:"			3 1 "$NETWORK_GATEWAY"			3 15 15 0)
 	[[ -z $IS_MANAGER ]] && exit_with_error "No option selected"
 fi
 source $SRC/lib/configuration.sh
