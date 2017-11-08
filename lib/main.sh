@@ -241,6 +241,16 @@ if [[ $KERNEL_ONLY != yes ]]; then
 	[[ -z $IS_MANAGER ]] && exit_with_error "No option selected"
 fi
 
+if [[ $KERNEL_ONLY != yes ]]; then
+	options=()
+	options+=("address:",1 1 "" 1 15 15 0)
+	options+=("netmask:",2 1 "" 2 15 15 0)
+	options+=("gateway",3 1 "" 3 15 15 0)
+	NETWORKCONFIG=$(dialog --stdout --title "Choose image type" --backtitle "$backtitle" --no-tags --form "Input Network Config" \
+			$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
+	unset options
+	[[ -z $IS_MANAGER ]] && exit_with_error "No option selected"
+fi
 source $SRC/lib/configuration.sh
 
 # optimize build time with 100% CPU usage

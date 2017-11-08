@@ -349,6 +349,7 @@ install_go()
 }
 
 install_skywire() {
+	display_alert "Test Form" "$NETWORKCONFIG" "info"
 	display_alert "Installing Skywire" "SkyWire" "info"
 	mkdir -p $SDCARD/usr/local/go/src/github.com/skycoin
 	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/go/src/github.com/skycoin
