@@ -355,13 +355,22 @@ install_skywire() {
 	cp -r $SRC/cache/sources/monitor-web/dist-* $SDCARD/usr/local/go/bin
 	install_skywire_script
 	set_static_ip
+	set_auto_login
 }
 
 install_skywire_script()
 {
 	display_alert "Installing Skywire Script" "SkyWire Script" "info"
 	if [[ $IS_MANAGER == yes ]]; then
-		cat <<-EOF > $SDCARD/etc/profile.d/manager_install.sh
+		install_manager
+	else
+		install_node
+	fi
+}
+
+install_manager()
+{
+	cat <<-EOF > $SDCARD/etc/profile.d/manager_install.sh
 			#!/bin/bash
 			# SkyWire Manager Install
 			Manager_Pid_FILE=manager.pid
@@ -378,8 +387,11 @@ install_skywire_script()
 			echo "SkyWire Manager Done"
 		EOF
 		chmod +x $SDCARD/etc/profile.d/manager_install.sh
-	else
-		cat <<-EOF > $SDCARD/etc/profile.d/node_install.sh
+}
+
+install_node()
+{
+	cat <<-EOF > $SDCARD/etc/profile.d/node_install.sh
 			#!/bin/bash
 			# SkyWire Install
 			Node_Pid_FILE=node.pid
@@ -396,7 +408,6 @@ install_skywire_script()
 			echo "SkyWire Node Done"
 		EOF
 		chmod +x $SDCARD/etc/profile.d/node_install.sh
-	fi
 }
 
 set_static_ip()
@@ -407,5 +418,15 @@ set_static_ip()
         address $NETWORK_ADDRESS
         netmask $NETWORK_NETMASK
         gateway $NETWORK_GATEWAY
+	EOF
+}
+
+set_auto_login()
+{
+	mkdir -p /etc/systemd/system/getty@tty1.service.d
+	cat <<-EOF > /etc/systemd/system/getty@tty1.service.d/autologin.conf
+		[Service]
+		ExecStart=
+		ExecStart=-/sbin/agetty --autologin root %I
 	EOF
 }
