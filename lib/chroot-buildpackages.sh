@@ -356,6 +356,7 @@ install_skywire() {
 	install_skywire_script
 	set_static_ip
 	set_auto_login
+	cp $SRC/packages/script/10-header $SDCARD/etc/update-motd.d/
 }
 
 install_skywire_script()
@@ -403,17 +404,17 @@ set_static_ip()
 	cat <<-EOF > $SDCARD/etc/network/interfaces.d/eth0
 		auto eth0
     iface eth0 inet static
-        address $NETWORKCONFIG[0]
-        netmask $NETWORKCONFIG[1]
-        gateway $NETWORKCONFIG[2]
+        address ${NETWORKCONFIG[0]}
+        netmask ${NETWORKCONFIG[1]}
+        gateway ${NETWORKCONFIG[2]}
 	EOF
 }
 
 set_auto_login()
 {
 	display_alert "Setting Auto Login" "Auto Login" "info"
-	mkdir -p /etc/systemd/system/getty@tty1.service.d
-	cat <<-EOF > /etc/systemd/system/getty@tty1.service.d/autologin.conf
+	mkdir -p $SDCARD/etc/systemd/system/getty@tty1.service.d
+	cat <<-EOF > $SDCARD/etc/systemd/system/getty@tty1.service.d/autologin.conf
 		[Service]
 		ExecStart=
 		ExecStart=-/sbin/agetty --autologin root %I
