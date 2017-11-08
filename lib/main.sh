@@ -231,7 +231,7 @@ if [[ $KERNEL_ONLY != yes && -z $BUILD_DESKTOP ]]; then
 	[[ -z $BUILD_DESKTOP ]] && exit_with_error "No option selected"
 fi
 
-if [[ $KERNEL_ONLY != yes && -z $BUILD_DESKTOP ]]; then
+if [[ $KERNEL_ONLY != yes]]; then
 	options=()
 	options+=("yes" "Manager")
 	options+=("no" "Node")
