@@ -359,6 +359,6 @@ install_skywire() {
 install_skywire_script()
 {
 	display_alert "Installing Skywire Script" "SkyWire Script" "info"
-	cp -r $SRC/packages/software/script/skywire_install.sh $SDCARD/etc/profile.d
+	cp -r $SRC/packages/script/skywire_install.sh $SDCARD/etc/profile.d
 	chmod +x $SDCARD/etc/profile.d/skywire_install.sh
 }
