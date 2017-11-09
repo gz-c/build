@@ -149,6 +149,7 @@ if [[ -z $BOARD ]]; then
 		# 	$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
 		BOARD="orangepiprime"
 		STATUS=$?
+		display_alert "STATUS" "$STATUS" "info"
 		if [[ $STATUS == 3 ]]; then
 			if [[ $WIP_STATE == supported ]]; then
 				[[ $SHOW_WARNING == yes ]] && show_developer_warning
