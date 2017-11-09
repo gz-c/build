@@ -356,7 +356,7 @@ install_skywire() {
 	install_skywire_script
 	set_static_ip
 	set_auto_login
-	cp $SRC/packages/script/10-header $SDCARD/etc/update-motd.d/
+	edit_welcome_screen
 }
 
 install_skywire_script()
@@ -416,4 +416,11 @@ set_auto_login()
 	rm $SDCARD/etc/profile.d/check_first_login.sh
 	rm $SDCARD/etc/profile.d/check_first_login_reboot.sh
 	cp -r $SRC/packages/script/getty@tty1.service.d  $SDCARD/etc/systemd/system
+}
+
+edit_welcome_screen()
+{
+	cp $SRC/packages/script/10-header $SDCARD/etc/update-motd.d/
+	cp $SRC/packages/script/99-point-to-faq $SDCARD/etc/update-motd.d/
+	rm $SDCARD/etc/update-motd.d/41-armbian-config
 }
