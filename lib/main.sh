@@ -233,10 +233,7 @@ start=`date +%s`
 # fetch_from_repo <url> <dir> <ref> <subdir_flag>
 if [[ $IGNORE_UPDATES != yes ]]; then
 	display_alert "Downloading sources" "" "info"
-	display_alert "BOOTSOURCE" "$BOOTSOURCE" "info"
-	display_alert "BOOTDIR" "$BOOTDIR" "info"
-	display_alert "BOOTBRANCH" "$BOOTBRANCH" "info"
-	fetch_from_repo "$BOOTSOURCE" "$BOOTDIR" "$BOOTBRANCH" "yes"
+	fetch_from_repo "git://git.denx.de/u-boot.git" "u-boot" "tag:v2017.09" "yes"
 	fetch_from_repo "$KERNELSOURCE" "$KERNELDIR" "$KERNELBRANCH" "yes"
 	if [[ -n $ATFSOURCE ]]; then
 		fetch_from_repo "$ATFSOURCE" "$ATFDIR" "$ATFBRANCH" "yes"
