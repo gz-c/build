@@ -252,24 +252,16 @@ if [[ $KERNEL_ONLY != yes ]]; then
 	NETWORK_ADDRESS=""
 	NETWORK_NETMASK=""
 	NETWORK_GATEWAY=""
-	exec 3>&1
-	dialog --stdout --title "Edit Network Config" --backtitle "$backtitle" --no-tags --form "Enter the parameters you need" $TTY_Y $TTY_X $(($TTY_Y - 8)) \
+	NETWORKCONFIG=$(dialog --stdout --title "Edit Network Config" --backtitle "$backtitle" --no-tags --form "Enter the parameters you need" $TTY_Y $TTY_X $(($TTY_Y - 8)) \
 			"Address:"	1 1 "$NETWORK_ADDRESS"		1 15 15 0 \
 			"Netmask:"	2 1 "$NETWORK_NETMASK"		2 15 15 0 \
-			"Gateway:"	3 1 "$NETWORK_GATEWAY"		3 15 15 0 \
-	2>&1 1>&3 | {
-		read -r NETWORK_ADDRESS
-		read -r NETWORK_NETMASK
-		read -r NETWORK_GATEWAY
-
-		echo $NETWORK_ADDRESS
-		echo $NETWORK_NETMASK
-		echo $NETWORK_GATEWAY
-	}
-	exec 3>&-
+			"Gateway:"	3 1 "$NETWORK_GATEWAY"		3 15 15 0)
+	[[ -z $NETWORKCONFIG ]] && exit_with_error "No option selected"
 fi
 
-display_alert "Network Config" "$(cut -f 1 $NETWORKCONFIG)" "info"
+display_alert "Downloading sources" "$(echo "$NETWORKCONFIG" | cut -f 1)" "info"
+display_alert "Downloading sources" "$(echo "$NETWORKCONFIG" | cut -f 2)" "info"
+display_alert "Downloading sources" "$(echo "$NETWORKCONFIG" | cut -f 3)" "info"
 
 source $SRC/lib/configuration.sh
 
