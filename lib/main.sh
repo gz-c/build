@@ -97,27 +97,18 @@ prepare_host
 
 # if KERNEL_ONLY, KERNEL_CONFIGURE, BOARD, BRANCH or RELEASE are not set, display selection menu
 
-# if [[ -z $KERNEL_ONLY ]]; then
-# 	options+=("yes" "U-boot and kernel packages")
-# 	options+=("no" "Full OS image for flashing")
-# 	KERNEL_ONLY=$(dialog --stdout --title "Choose an option" --backtitle "$backtitle" --no-tags --menu "Select what to build" \
-# 		$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-# 	unset options
-# 	[[ -z $KERNEL_ONLY ]] && exit_with_error "No option selected"
+if [[ -z $KERNEL_ONLY ]]; then
+	KERNEL_ONLY="no"
+	[[ -z $KERNEL_ONLY ]] && exit_with_error "No option selected"
 
 # fi
-KERNEL_ONLY="no"
 
-# if [[ -z $KERNEL_CONFIGURE ]]; then
-# 	options+=("no" "Do not change the kernel configuration")
-# 	options+=("yes" "Show a kernel configuration menu before compilation")
-# 	KERNEL_CONFIGURE=$(dialog --stdout --title "Choose an option" --backtitle "$backtitle" --no-tags --menu "Select the kernel configuration" \
-# 		$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-# 	unset options
-# 	[[ -z $KERNEL_CONFIGURE ]] && exit_with_error "No option selected"
 
-# fi
-KERNEL_CONFIGURE="no"
+if [[ -z $KERNEL_CONFIGURE ]]; then
+	KERNEL_CONFIGURE="no"
+	[[ -z $KERNEL_CONFIGURE ]] && exit_with_error "No option selected"
+
+fi
 
 if [[ -z $BOARD ]]; then
 	WIP_STATE=supported
@@ -192,65 +183,28 @@ source $SRC/config/boards/${BOARD}.${BOARD_TYPE}
 
 [[ -z $KERNEL_TARGET ]] && exit_with_error "Board configuration does not define valid kernel config"
 
-# if [[ -z $BRANCH ]]; then
-# 	options=()
-# 	[[ $KERNEL_TARGET == *default* ]] && options+=("default" "Vendor provided / legacy (3.4.x - 4.4.x)")
-# 	[[ $KERNEL_TARGET == *next* ]] && options+=("next"       "Mainline (@kernel.org)   (4.x)")
-# 	[[ $KERNEL_TARGET == *dev* && $EXPERT=yes ]] && options+=("dev"         "\Z1Development version      (4.x)\Zn")
-# 	# do not display selection dialog if only one kernel branch is available
-# 	if [[ "${#options[@]}" == 2 ]]; then
-# 		BRANCH="${options[0]}"
-# 	else
-# 		BRANCH=$(dialog --stdout --title "Choose a kernel" --backtitle "$backtitle" --colors \
-# 			--menu "Select the target kernel branch\nExact kernel versions depend on selected board" \
-# 			$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-# 	fi
-# 	unset options
-# 	[[ -z $BRANCH ]] && exit_with_error "No kernel branch selected"
-# 	[[ $BRANCH == dev && $SHOW_WARNING == yes ]] && show_developer_warning
-# else
-# 	[[ $KERNEL_TARGET != *$BRANCH* ]] && exit_with_error "Kernel branch not defined for this board" "$BRANCH"
-# fi
-BRANCH="default"
+if [[ -z $BRANCH ]]; then
+	BRANCH="default"
+	unset options
+	[[ -z $BRANCH ]] && exit_with_error "No kernel branch selected"
+	[[ $BRANCH == dev && $SHOW_WARNING == yes ]] && show_developer_warning
+else
+	[[ $KERNEL_TARGET != *$BRANCH* ]] && exit_with_error "Kernel branch not defined for this board" "$BRANCH"
+fi
 
-# if [[ $KERNEL_ONLY != yes && -z $RELEASE ]]; then
-# 	options=()
-# 	options+=("jessie" "Debian 8 Jessie")
-# 	[[ $CAN_BUILD_STRETCH == yes ]] && options+=("stretch" "Debian 9 Stretch")
-# 	options+=("xenial" "Ubuntu Xenial 16.04 LTS")
-# 	RELEASE=$(dialog --stdout --title "Choose a release" --backtitle "$backtitle" --menu "Select the target OS release" \
-# 		$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-# 	unset options
-# 	[[ -z $RELEASE ]] && exit_with_error "No release selected"
-# fi
-RELEASE="jessie"
+if [[ $KERNEL_ONLY != yes && -z $RELEASE ]]; then
+	RELEASE="jessie"
+	[[ -z $RELEASE ]] && exit_with_error "No release selected"
+fi
 
-# if [[ $KERNEL_ONLY != yes && -z $BUILD_DESKTOP ]]; then
-# 	options=()
-# 	options+=("no" "Image with console interface (server)")
-# 	options+=("yes" "Image with desktop environment")
-# 	BUILD_DESKTOP=$(dialog --stdout --title "Choose image type" --backtitle "$backtitle" --no-tags --menu "Select the target image type" \
-# 		$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-# 	unset options
-# 	[[ -z $BUILD_DESKTOP ]] && exit_with_error "No option selected"
-# fi
-BUILD_DESKTOP="no"
-# if [[ $KERNEL_ONLY != yes ]]; then
-# 	options=()
-# 	options+=("yes" "Manager")
-# 	options+=("no" "Node")
-# 	IS_MANAGER=$(dialog --stdout --title "Choose image type" --backtitle "$backtitle" --no-tags --menu "Select the build manager or node image" \
-# 			$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-# 	unset options
-# 	[[ -z $IS_MANAGER ]] && exit_with_error "No option selected"
-# fi
+if [[ $KERNEL_ONLY != yes && -z $BUILD_DESKTOP ]]; then
+	BUILD_DESKTOP="no"
+	[[ -z $BUILD_DESKTOP ]] && exit_with_error "No option selected"
+fi
+
 IS_MANAGER="yes"
 
 if [[ $IS_MANAGER != yes ]]; then
-	# MANAGER_ADDRESS=""
-	# MANAGER_CONFIG=$(dialog --stdout --title "Edit Network Config" --backtitle "$backtitle" --no-tags --form "Enter the parameters you need" $TTY_Y $TTY_X $(($TTY_Y - 8)) \
-	# 		"Manger Address:"	3 1 "$MANAGER_ADDRESS"		3 15 15 0)
-	# [[ -z $IS_MANAGER ]] && exit_with_error "No option selected"
 	MANAGER_CONFIG="192.168.0.254"
 fi
 
@@ -259,16 +213,6 @@ if [[ $IS_MANAGER == yes ]]; then
 	NETWORK_NETMASK="255.255.255.0"
 	NETWORK_GATEWAY="192.168.0.254"
 fi
-
-# if [[ $KERNEL_ONLY != yes ]]; then
-	
-# 	NETWORKCONFIG=$(dialog --stdout --title "Edit Network Config" --backtitle "$backtitle" --no-tags --form "Enter the parameters you need" $TTY_Y $TTY_X $(($TTY_Y - 8)) \
-# 			"Address:"	1 1 "$NETWORK_ADDRESS"		1 15 15 0 \
-# 			"Netmask:"	2 1 "$NETWORK_NETMASK"		2 15 15 0 \
-# 			"Gateway:"	3 1 "$NETWORK_GATEWAY"		3 15 15 0 \
-# 			)
-# 	[[ -z $NETWORKCONFIG ]] && exit_with_error "No option selected"
-# fi
 
 
 source $SRC/lib/configuration.sh
