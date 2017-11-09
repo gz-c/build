@@ -401,7 +401,7 @@ install_node()
 
 set_static_ip()
 {
-	cat <<-EOF > $SDCARD/etc/network/interfaces.d/eth0
+	cat <<-EOF > $SDCARD/etc/network/interfaces
 		auto eth0
     iface eth0 inet static
         address ${NETWORK_ADDRESS}
@@ -414,5 +414,6 @@ set_auto_login()
 {	
 	display_alert "Setting Auto Login" "Auto Login" "info"
 	rm $SDCARD/etc/profile.d/check_first_login.sh
+	rm $SDCARD/etc/profile.d/check_first_login_reboot.sh
 	cp -r $SRC/packages/script/getty@tty1.service.d  $SDCARD/etc/systemd/system
 }

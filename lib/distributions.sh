@@ -55,7 +55,7 @@ install_common()
 	# set root password
 	chroot $SDCARD /bin/bash -c "(echo $ROOTPWD;echo $ROOTPWD;) | passwd root >/dev/null 2>&1"
 	# force change root password at first login
-	chroot $SDCARD /bin/bash -c "chage -d 0 root"
+	# chroot $SDCARD /bin/bash -c "chage -d 0 root"
 
 	# display welcome message at first root login
 	touch $SDCARD/root/.not_logged_in_yet
