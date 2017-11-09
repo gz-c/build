@@ -177,7 +177,7 @@ elif [[ -f $SRC/config/boards/${BOARD}.wip ]]; then
 elif [[ -f $SRC/config/boards/${BOARD}.eos ]]; then
 	BOARD_TYPE='eos'
 fi
-
+display_alert "Select Board type:" "$BOARD_TYPE" "info"
 source $SRC/config/boards/${BOARD}.${BOARD_TYPE}
 
 [[ -z $KERNEL_TARGET ]] && exit_with_error "Board configuration does not define valid kernel config"
