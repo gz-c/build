@@ -3,7 +3,7 @@
 Manager_Pid_FILE=manager.pid
 type "manager" && type "discovery" && type "socksc" && type "sockss" && type "sshc" && type "sshs" > /dev/null || {
 		cd /usr/local/go/src/github.com/skycoin/skywire/cmd
-		go install ./...
+		/usr/local/go/bin/go install ./...
 }
 echo "Starting SkyWire Manager"
 nohup manager -web-dir /usr/local/go/bin/dist-manager &

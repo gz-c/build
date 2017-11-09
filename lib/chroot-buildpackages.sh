@@ -373,8 +373,9 @@ install_skywire_script()
 install_manager()
 {
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
-	cp -r $SRC/packages/script/manager_install.sh $SDCARD/etc/profile.d/manager_install.sh
-	chmod +x $SDCARD/etc/profile.d/manager_install.sh
+	cp -r $SRC/packages/script/manager_install.sh $SDCARD/usr/bin/manager_install.sh
+	chmod +x $SDCARD/usr/bin/manager_install.sh
+	cp $SRC/packages/script/manager_install.sh $SDCARD/etc/rc.local
 }
 
 install_node()
