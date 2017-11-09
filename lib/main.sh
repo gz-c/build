@@ -178,13 +178,13 @@ elif [[ -f $SRC/config/boards/${BOARD}.wip ]]; then
 elif [[ -f $SRC/config/boards/${BOARD}.eos ]]; then
 	BOARD_TYPE='eos'
 fi
-display_alert "Select Board type:" "$BOARD_TYPE" "info"
+
 source $SRC/config/boards/${BOARD}.${BOARD_TYPE}
 
 [[ -z $KERNEL_TARGET ]] && exit_with_error "Board configuration does not define valid kernel config"
 
 if [[ -z $BRANCH ]]; then
-	BRANCH="default"
+	BRANCH="next"
 	unset options
 	[[ -z $BRANCH ]] && exit_with_error "No kernel branch selected"
 	[[ $BRANCH == dev && $SHOW_WARNING == yes ]] && show_developer_warning
@@ -233,7 +233,7 @@ start=`date +%s`
 # fetch_from_repo <url> <dir> <ref> <subdir_flag>
 if [[ $IGNORE_UPDATES != yes ]]; then
 	display_alert "Downloading sources" "" "info"
-	fetch_from_repo "git://git.denx.de/u-boot.git" "u-boot" "tag:v2017.09" "yes"
+	fetch_from_repo "$BOOTSOURCE" "$BOOTDIR" "$BOOTBRANCH" "yes"
 	fetch_from_repo "$KERNELSOURCE" "$KERNELDIR" "$KERNELBRANCH" "yes"
 	if [[ -n $ATFSOURCE ]]; then
 		fetch_from_repo "$ATFSOURCE" "$ATFDIR" "$ATFBRANCH" "yes"
