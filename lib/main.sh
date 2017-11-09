@@ -100,8 +100,7 @@ prepare_host
 if [[ -z $KERNEL_ONLY ]]; then
 	KERNEL_ONLY="no"
 	[[ -z $KERNEL_ONLY ]] && exit_with_error "No option selected"
-
-# fi
+fi
 
 
 if [[ -z $KERNEL_CONFIGURE ]]; then
