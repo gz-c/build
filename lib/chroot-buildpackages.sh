@@ -404,9 +404,9 @@ set_static_ip()
 	cat <<-EOF > $SDCARD/etc/network/interfaces.d/eth0
 		auto eth0
     iface eth0 inet static
-        address ${NETWORKCONFIG[0]}
-        netmask ${NETWORKCONFIG[1]}
-        gateway ${NETWORKCONFIG[2]}
+        address ${NETWORK_ADDRESS}
+        netmask ${NETWORK_ADDRESS}
+        gateway ${NETWORK_ADDRESS}
 	EOF
 }
 

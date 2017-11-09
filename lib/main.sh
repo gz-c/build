@@ -97,85 +97,87 @@ prepare_host
 
 # if KERNEL_ONLY, KERNEL_CONFIGURE, BOARD, BRANCH or RELEASE are not set, display selection menu
 
-if [[ -z $KERNEL_ONLY ]]; then
-	options+=("yes" "U-boot and kernel packages")
-	options+=("no" "Full OS image for flashing")
-	KERNEL_ONLY=$(dialog --stdout --title "Choose an option" --backtitle "$backtitle" --no-tags --menu "Select what to build" \
-		$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-	unset options
-	[[ -z $KERNEL_ONLY ]] && exit_with_error "No option selected"
+# if [[ -z $KERNEL_ONLY ]]; then
+# 	options+=("yes" "U-boot and kernel packages")
+# 	options+=("no" "Full OS image for flashing")
+# 	KERNEL_ONLY=$(dialog --stdout --title "Choose an option" --backtitle "$backtitle" --no-tags --menu "Select what to build" \
+# 		$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
+# 	unset options
+# 	[[ -z $KERNEL_ONLY ]] && exit_with_error "No option selected"
 
-fi
+# fi
+KERNEL_ONLY="yes"
 
-if [[ -z $KERNEL_CONFIGURE ]]; then
-	options+=("no" "Do not change the kernel configuration")
-	options+=("yes" "Show a kernel configuration menu before compilation")
-	KERNEL_CONFIGURE=$(dialog --stdout --title "Choose an option" --backtitle "$backtitle" --no-tags --menu "Select the kernel configuration" \
-		$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-	unset options
-	[[ -z $KERNEL_CONFIGURE ]] && exit_with_error "No option selected"
+# if [[ -z $KERNEL_CONFIGURE ]]; then
+# 	options+=("no" "Do not change the kernel configuration")
+# 	options+=("yes" "Show a kernel configuration menu before compilation")
+# 	KERNEL_CONFIGURE=$(dialog --stdout --title "Choose an option" --backtitle "$backtitle" --no-tags --menu "Select the kernel configuration" \
+# 		$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
+# 	unset options
+# 	[[ -z $KERNEL_CONFIGURE ]] && exit_with_error "No option selected"
 
-fi
+# fi
+KERNEL_CONFIGURE="no"
 
-if [[ -z $BOARD ]]; then
-	WIP_STATE=supported
-	WIP_BUTTON='CSC/WIP/EOS'
-	STATE_DESCRIPTION=' - Officially supported boards'
-	[[ $EXPERT = yes ]] && DIALOG_EXTRA="--extra-button"
-	temp_rc=$(mktemp)
-	while true; do
-		options=()
-		if [[ $WIP_STATE == supported ]]; then
-			for board in $SRC/config/boards/*.conf; do
-				options+=("$(basename $board | cut -d'.' -f1)" "$(head -1 $board | cut -d'#' -f2)")
-			done
-		else
-			for board in $SRC/config/boards/*.wip; do
-				options+=("$(basename $board | cut -d'.' -f1)" "\Z1(WIP)\Zn $(head -1 $board | cut -d'#' -f2)")
-			done
-			for board in $SRC/config/boards/*.csc; do
-				options+=("$(basename $board | cut -d'.' -f1)" "\Z1(CSC)\Zn $(head -1 $board | cut -d'#' -f2)")
-			done
-			for board in $SRC/config/boards/*.eos; do
-				options+=("$(basename $board | cut -d'.' -f1)" "\Z1(EOS)\Zn $(head -1 $board | cut -d'#' -f2)")
-			done
-		fi
-		if [[ $WIP_STATE != supported ]]; then
-			cat <<-'EOF' > $temp_rc
-			dialog_color = (RED,WHITE,OFF)
-			screen_color = (WHITE,RED,ON)
-			tag_color = (RED,WHITE,ON)
-			item_selected_color = (WHITE,RED,ON)
-			tag_selected_color = (WHITE,RED,ON)
-			tag_key_selected_color = (WHITE,RED,ON)
-			EOF
-		else
-			echo > $temp_rc
-		fi
-		BOARD=$(DIALOGRC=$temp_rc dialog --stdout --title "Choose a board" --backtitle "$backtitle" --scrollbar --colors \
-			--extra-label "Show $WIP_BUTTON" $DIALOG_EXTRA --menu "Select the target board. Displaying:\n$STATE_DESCRIPTION" \
-			$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-		STATUS=$?
-		if [[ $STATUS == 3 ]]; then
-			if [[ $WIP_STATE == supported ]]; then
-				[[ $SHOW_WARNING == yes ]] && show_developer_warning
-				STATE_DESCRIPTION=' - \Z1(CSC)\Zn - Community Supported Configuration\n - \Z1(WIP)\Zn - Work In Progress\n - \Z1(EOS)\Zn - End Of Support'
-				WIP_STATE=unsupported
-				WIP_BUTTON='supported'
-			else
-				STATE_DESCRIPTION=' - Officially supported boards'
-				WIP_STATE=supported
-				WIP_BUTTON='CSC/WIP/EOS'
-			fi
-			continue
-		elif [[ $STATUS == 0 ]]; then
-			break
-		fi
-		unset options
-		[[ -z $BOARD ]] && exit_with_error "No board selected"
-	done
-fi
-
+# if [[ -z $BOARD ]]; then
+# 	WIP_STATE=supported
+# 	WIP_BUTTON='CSC/WIP/EOS'
+# 	STATE_DESCRIPTION=' - Officially supported boards'
+# 	[[ $EXPERT = yes ]] && DIALOG_EXTRA="--extra-button"
+# 	temp_rc=$(mktemp)
+# 	while true; do
+# 		options=()
+# 		if [[ $WIP_STATE == supported ]]; then
+# 			for board in $SRC/config/boards/*.conf; do
+# 				options+=("$(basename $board | cut -d'.' -f1)" "$(head -1 $board | cut -d'#' -f2)")
+# 			done
+# 		else
+# 			for board in $SRC/config/boards/*.wip; do
+# 				options+=("$(basename $board | cut -d'.' -f1)" "\Z1(WIP)\Zn $(head -1 $board | cut -d'#' -f2)")
+# 			done
+# 			for board in $SRC/config/boards/*.csc; do
+# 				options+=("$(basename $board | cut -d'.' -f1)" "\Z1(CSC)\Zn $(head -1 $board | cut -d'#' -f2)")
+# 			done
+# 			for board in $SRC/config/boards/*.eos; do
+# 				options+=("$(basename $board | cut -d'.' -f1)" "\Z1(EOS)\Zn $(head -1 $board | cut -d'#' -f2)")
+# 			done
+# 		fi
+# 		if [[ $WIP_STATE != supported ]]; then
+# 			cat <<-'EOF' > $temp_rc
+# 			dialog_color = (RED,WHITE,OFF)
+# 			screen_color = (WHITE,RED,ON)
+# 			tag_color = (RED,WHITE,ON)
+# 			item_selected_color = (WHITE,RED,ON)
+# 			tag_selected_color = (WHITE,RED,ON)
+# 			tag_key_selected_color = (WHITE,RED,ON)
+# 			EOF
+# 		else
+# 			echo > $temp_rc
+# 		fi
+# 		BOARD=$(DIALOGRC=$temp_rc dialog --stdout --title "Choose a board" --backtitle "$backtitle" --scrollbar --colors \
+# 			--extra-label "Show $WIP_BUTTON" $DIALOG_EXTRA --menu "Select the target board. Displaying:\n$STATE_DESCRIPTION" \
+# 			$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
+# 		STATUS=$?
+# 		if [[ $STATUS == 3 ]]; then
+# 			if [[ $WIP_STATE == supported ]]; then
+# 				[[ $SHOW_WARNING == yes ]] && show_developer_warning
+# 				STATE_DESCRIPTION=' - \Z1(CSC)\Zn - Community Supported Configuration\n - \Z1(WIP)\Zn - Work In Progress\n - \Z1(EOS)\Zn - End Of Support'
+# 				WIP_STATE=unsupported
+# 				WIP_BUTTON='supported'
+# 			else
+# 				STATE_DESCRIPTION=' - Officially supported boards'
+# 				WIP_STATE=supported
+# 				WIP_BUTTON='CSC/WIP/EOS'
+# 			fi
+# 			continue
+# 		elif [[ $STATUS == 0 ]]; then
+# 			break
+# 		fi
+# 		unset options
+# 		[[ -z $BOARD ]] && exit_with_error "No board selected"
+# 	done
+# fi
+BOARD="orangepiprime"
 if [[ -f $SRC/config/boards/${BOARD}.conf ]]; then
 	BOARD_TYPE='conf'
 elif [[ -f $SRC/config/boards/${BOARD}.csc ]]; then
@@ -190,78 +192,82 @@ source $SRC/config/boards/${BOARD}.${BOARD_TYPE}
 
 [[ -z $KERNEL_TARGET ]] && exit_with_error "Board configuration does not define valid kernel config"
 
-if [[ -z $BRANCH ]]; then
-	options=()
-	[[ $KERNEL_TARGET == *default* ]] && options+=("default" "Vendor provided / legacy (3.4.x - 4.4.x)")
-	[[ $KERNEL_TARGET == *next* ]] && options+=("next"       "Mainline (@kernel.org)   (4.x)")
-	[[ $KERNEL_TARGET == *dev* && $EXPERT=yes ]] && options+=("dev"         "\Z1Development version      (4.x)\Zn")
-	# do not display selection dialog if only one kernel branch is available
-	if [[ "${#options[@]}" == 2 ]]; then
-		BRANCH="${options[0]}"
-	else
-		BRANCH=$(dialog --stdout --title "Choose a kernel" --backtitle "$backtitle" --colors \
-			--menu "Select the target kernel branch\nExact kernel versions depend on selected board" \
-			$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-	fi
-	unset options
-	[[ -z $BRANCH ]] && exit_with_error "No kernel branch selected"
-	[[ $BRANCH == dev && $SHOW_WARNING == yes ]] && show_developer_warning
-else
-	[[ $KERNEL_TARGET != *$BRANCH* ]] && exit_with_error "Kernel branch not defined for this board" "$BRANCH"
-fi
+# if [[ -z $BRANCH ]]; then
+# 	options=()
+# 	[[ $KERNEL_TARGET == *default* ]] && options+=("default" "Vendor provided / legacy (3.4.x - 4.4.x)")
+# 	[[ $KERNEL_TARGET == *next* ]] && options+=("next"       "Mainline (@kernel.org)   (4.x)")
+# 	[[ $KERNEL_TARGET == *dev* && $EXPERT=yes ]] && options+=("dev"         "\Z1Development version      (4.x)\Zn")
+# 	# do not display selection dialog if only one kernel branch is available
+# 	if [[ "${#options[@]}" == 2 ]]; then
+# 		BRANCH="${options[0]}"
+# 	else
+# 		BRANCH=$(dialog --stdout --title "Choose a kernel" --backtitle "$backtitle" --colors \
+# 			--menu "Select the target kernel branch\nExact kernel versions depend on selected board" \
+# 			$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
+# 	fi
+# 	unset options
+# 	[[ -z $BRANCH ]] && exit_with_error "No kernel branch selected"
+# 	[[ $BRANCH == dev && $SHOW_WARNING == yes ]] && show_developer_warning
+# else
+# 	[[ $KERNEL_TARGET != *$BRANCH* ]] && exit_with_error "Kernel branch not defined for this board" "$BRANCH"
+# fi
+BRANCH="default"
+# if [[ $KERNEL_ONLY != yes && -z $RELEASE ]]; then
+# 	options=()
+# 	options+=("jessie" "Debian 8 Jessie")
+# 	[[ $CAN_BUILD_STRETCH == yes ]] && options+=("stretch" "Debian 9 Stretch")
+# 	options+=("xenial" "Ubuntu Xenial 16.04 LTS")
+# 	RELEASE=$(dialog --stdout --title "Choose a release" --backtitle "$backtitle" --menu "Select the target OS release" \
+# 		$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
+# 	unset options
+# 	[[ -z $RELEASE ]] && exit_with_error "No release selected"
+# fi
 
-if [[ $KERNEL_ONLY != yes && -z $RELEASE ]]; then
-	options=()
-	options+=("jessie" "Debian 8 Jessie")
-	[[ $CAN_BUILD_STRETCH == yes ]] && options+=("stretch" "Debian 9 Stretch")
-	options+=("xenial" "Ubuntu Xenial 16.04 LTS")
-	RELEASE=$(dialog --stdout --title "Choose a release" --backtitle "$backtitle" --menu "Select the target OS release" \
-		$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-	unset options
-	[[ -z $RELEASE ]] && exit_with_error "No release selected"
-fi
-
-if [[ $KERNEL_ONLY != yes && -z $BUILD_DESKTOP ]]; then
-	options=()
-	options+=("no" "Image with console interface (server)")
-	options+=("yes" "Image with desktop environment")
-	BUILD_DESKTOP=$(dialog --stdout --title "Choose image type" --backtitle "$backtitle" --no-tags --menu "Select the target image type" \
-		$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-	unset options
-	[[ -z $BUILD_DESKTOP ]] && exit_with_error "No option selected"
-fi
-
-if [[ $KERNEL_ONLY != yes ]]; then
-	options=()
-	options+=("yes" "Manager")
-	options+=("no" "Node")
-	IS_MANAGER=$(dialog --stdout --title "Choose image type" --backtitle "$backtitle" --no-tags --menu "Select the build manager or node image" \
-			$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-	unset options
-	[[ -z $IS_MANAGER ]] && exit_with_error "No option selected"
-fi
+# if [[ $KERNEL_ONLY != yes && -z $BUILD_DESKTOP ]]; then
+# 	options=()
+# 	options+=("no" "Image with console interface (server)")
+# 	options+=("yes" "Image with desktop environment")
+# 	BUILD_DESKTOP=$(dialog --stdout --title "Choose image type" --backtitle "$backtitle" --no-tags --menu "Select the target image type" \
+# 		$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
+# 	unset options
+# 	[[ -z $BUILD_DESKTOP ]] && exit_with_error "No option selected"
+# fi
+RELEASE="jessie"
+# if [[ $KERNEL_ONLY != yes ]]; then
+# 	options=()
+# 	options+=("yes" "Manager")
+# 	options+=("no" "Node")
+# 	IS_MANAGER=$(dialog --stdout --title "Choose image type" --backtitle "$backtitle" --no-tags --menu "Select the build manager or node image" \
+# 			$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
+# 	unset options
+# 	[[ -z $IS_MANAGER ]] && exit_with_error "No option selected"
+# fi
+IS_MANAGER="yes"
 
 if [[ $IS_MANAGER != yes ]]; then
-	MANAGER_ADDRESS=""
-	MANAGER_CONFIG=$(dialog --stdout --title "Edit Network Config" --backtitle "$backtitle" --no-tags --form "Enter the parameters you need" $TTY_Y $TTY_X $(($TTY_Y - 8)) \
-			"Manger Address:"	3 1 "$MANAGER_ADDRESS"		3 15 15 0)
-	[[ -z $IS_MANAGER ]] && exit_with_error "No option selected"
+	# MANAGER_ADDRESS=""
+	# MANAGER_CONFIG=$(dialog --stdout --title "Edit Network Config" --backtitle "$backtitle" --no-tags --form "Enter the parameters you need" $TTY_Y $TTY_X $(($TTY_Y - 8)) \
+	# 		"Manger Address:"	3 1 "$MANAGER_ADDRESS"		3 15 15 0)
+	# [[ -z $IS_MANAGER ]] && exit_with_error "No option selected"
+	MANAGER_CONFIG="192.168.0.254"
 fi
 
-if [[ $KERNEL_ONLY != yes ]]; then
-	NETWORK_ADDRESS=""
-	NETWORK_NETMASK=""
-	NETWORK_GATEWAY=""
-	NETWORKCONFIG=$(dialog --stdout --title "Edit Network Config" --backtitle "$backtitle" --no-tags --form "Enter the parameters you need" $TTY_Y $TTY_X $(($TTY_Y - 8)) \
-			"Address:"	1 1 "$NETWORK_ADDRESS"		1 15 15 0 \
-			"Netmask:"	2 1 "$NETWORK_NETMASK"		2 15 15 0 \
-			"Gateway:"	3 1 "$NETWORK_GATEWAY"		3 15 15 0)
-	[[ -z $NETWORKCONFIG ]] && exit_with_error "No option selected"
+if [[ $IS_MANAGER == yes ]]; then
+	NETWORK_ADDRESS="192.168.0.100"
+	NETWORK_NETMASK="255.255.255.0"
+	NETWORK_GATEWAY="192.168.0.254"
 fi
 
-display_alert "Downloading sources" "$(echo "$NETWORKCONFIG" | cut -f 1)" "info"
-display_alert "Downloading sources" "$(echo "$NETWORKCONFIG" | cut -f 2)" "info"
-display_alert "Downloading sources" "$(echo "$NETWORKCONFIG" | cut -f 3)" "info"
+# if [[ $KERNEL_ONLY != yes ]]; then
+	
+# 	NETWORKCONFIG=$(dialog --stdout --title "Edit Network Config" --backtitle "$backtitle" --no-tags --form "Enter the parameters you need" $TTY_Y $TTY_X $(($TTY_Y - 8)) \
+# 			"Address:"	1 1 "$NETWORK_ADDRESS"		1 15 15 0 \
+# 			"Netmask:"	2 1 "$NETWORK_NETMASK"		2 15 15 0 \
+# 			"Gateway:"	3 1 "$NETWORK_GATEWAY"		3 15 15 0 \
+# 			)
+# 	[[ -z $NETWORKCONFIG ]] && exit_with_error "No option selected"
+# fi
+
 
 source $SRC/lib/configuration.sh
 
