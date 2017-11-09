@@ -106,7 +106,7 @@ prepare_host
 # 	[[ -z $KERNEL_ONLY ]] && exit_with_error "No option selected"
 
 # fi
-KERNEL_ONLY="yes"
+KERNEL_ONLY="no"
 
 # if [[ -z $KERNEL_CONFIGURE ]]; then
 # 	options+=("no" "Do not change the kernel configuration")
@@ -119,65 +119,65 @@ KERNEL_ONLY="yes"
 # fi
 KERNEL_CONFIGURE="no"
 
-# if [[ -z $BOARD ]]; then
-# 	WIP_STATE=supported
-# 	WIP_BUTTON='CSC/WIP/EOS'
-# 	STATE_DESCRIPTION=' - Officially supported boards'
-# 	[[ $EXPERT = yes ]] && DIALOG_EXTRA="--extra-button"
-# 	temp_rc=$(mktemp)
-# 	while true; do
-# 		options=()
-# 		if [[ $WIP_STATE == supported ]]; then
-# 			for board in $SRC/config/boards/*.conf; do
-# 				options+=("$(basename $board | cut -d'.' -f1)" "$(head -1 $board | cut -d'#' -f2)")
-# 			done
-# 		else
-# 			for board in $SRC/config/boards/*.wip; do
-# 				options+=("$(basename $board | cut -d'.' -f1)" "\Z1(WIP)\Zn $(head -1 $board | cut -d'#' -f2)")
-# 			done
-# 			for board in $SRC/config/boards/*.csc; do
-# 				options+=("$(basename $board | cut -d'.' -f1)" "\Z1(CSC)\Zn $(head -1 $board | cut -d'#' -f2)")
-# 			done
-# 			for board in $SRC/config/boards/*.eos; do
-# 				options+=("$(basename $board | cut -d'.' -f1)" "\Z1(EOS)\Zn $(head -1 $board | cut -d'#' -f2)")
-# 			done
-# 		fi
-# 		if [[ $WIP_STATE != supported ]]; then
-# 			cat <<-'EOF' > $temp_rc
-# 			dialog_color = (RED,WHITE,OFF)
-# 			screen_color = (WHITE,RED,ON)
-# 			tag_color = (RED,WHITE,ON)
-# 			item_selected_color = (WHITE,RED,ON)
-# 			tag_selected_color = (WHITE,RED,ON)
-# 			tag_key_selected_color = (WHITE,RED,ON)
-# 			EOF
-# 		else
-# 			echo > $temp_rc
-# 		fi
-# 		BOARD=$(DIALOGRC=$temp_rc dialog --stdout --title "Choose a board" --backtitle "$backtitle" --scrollbar --colors \
-# 			--extra-label "Show $WIP_BUTTON" $DIALOG_EXTRA --menu "Select the target board. Displaying:\n$STATE_DESCRIPTION" \
-# 			$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
-# 		STATUS=$?
-# 		if [[ $STATUS == 3 ]]; then
-# 			if [[ $WIP_STATE == supported ]]; then
-# 				[[ $SHOW_WARNING == yes ]] && show_developer_warning
-# 				STATE_DESCRIPTION=' - \Z1(CSC)\Zn - Community Supported Configuration\n - \Z1(WIP)\Zn - Work In Progress\n - \Z1(EOS)\Zn - End Of Support'
-# 				WIP_STATE=unsupported
-# 				WIP_BUTTON='supported'
-# 			else
-# 				STATE_DESCRIPTION=' - Officially supported boards'
-# 				WIP_STATE=supported
-# 				WIP_BUTTON='CSC/WIP/EOS'
-# 			fi
-# 			continue
-# 		elif [[ $STATUS == 0 ]]; then
-# 			break
-# 		fi
-# 		unset options
-# 		[[ -z $BOARD ]] && exit_with_error "No board selected"
-# 	done
-# fi
-BOARD="orangepiprime"
+if [[ -z $BOARD ]]; then
+	WIP_STATE=supported
+	WIP_BUTTON='CSC/WIP/EOS'
+	STATE_DESCRIPTION=' - Officially supported boards'
+	[[ $EXPERT = yes ]] && DIALOG_EXTRA="--extra-button"
+	temp_rc=$(mktemp)
+	while true; do
+		options=()
+		if [[ $WIP_STATE == supported ]]; then
+			for board in $SRC/config/boards/*.conf; do
+				options+=("$(basename $board | cut -d'.' -f1)" "$(head -1 $board | cut -d'#' -f2)")
+			done
+		else
+			for board in $SRC/config/boards/*.wip; do
+				options+=("$(basename $board | cut -d'.' -f1)" "\Z1(WIP)\Zn $(head -1 $board | cut -d'#' -f2)")
+			done
+			for board in $SRC/config/boards/*.csc; do
+				options+=("$(basename $board | cut -d'.' -f1)" "\Z1(CSC)\Zn $(head -1 $board | cut -d'#' -f2)")
+			done
+			for board in $SRC/config/boards/*.eos; do
+				options+=("$(basename $board | cut -d'.' -f1)" "\Z1(EOS)\Zn $(head -1 $board | cut -d'#' -f2)")
+			done
+		fi
+		if [[ $WIP_STATE != supported ]]; then
+			cat <<-'EOF' > $temp_rc
+			dialog_color = (RED,WHITE,OFF)
+			screen_color = (WHITE,RED,ON)
+			tag_color = (RED,WHITE,ON)
+			item_selected_color = (WHITE,RED,ON)
+			tag_selected_color = (WHITE,RED,ON)
+			tag_key_selected_color = (WHITE,RED,ON)
+			EOF
+		else
+			echo > $temp_rc
+		fi
+		# BOARD=$(DIALOGRC=$temp_rc dialog --stdout --title "Choose a board" --backtitle "$backtitle" --scrollbar --colors \
+		# 	--extra-label "Show $WIP_BUTTON" $DIALOG_EXTRA --menu "Select the target board. Displaying:\n$STATE_DESCRIPTION" \
+		# 	$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
+		BOARD="orangepiprime"
+		STATUS=$?
+		if [[ $STATUS == 3 ]]; then
+			if [[ $WIP_STATE == supported ]]; then
+				[[ $SHOW_WARNING == yes ]] && show_developer_warning
+				STATE_DESCRIPTION=' - \Z1(CSC)\Zn - Community Supported Configuration\n - \Z1(WIP)\Zn - Work In Progress\n - \Z1(EOS)\Zn - End Of Support'
+				WIP_STATE=unsupported
+				WIP_BUTTON='supported'
+			else
+				STATE_DESCRIPTION=' - Officially supported boards'
+				WIP_STATE=supported
+				WIP_BUTTON='CSC/WIP/EOS'
+			fi
+			continue
+		elif [[ $STATUS == 0 ]]; then
+			break
+		fi
+		unset options
+		[[ -z $BOARD ]] && exit_with_error "No board selected"
+	done
+fi
 if [[ -f $SRC/config/boards/${BOARD}.conf ]]; then
 	BOARD_TYPE='conf'
 elif [[ -f $SRC/config/boards/${BOARD}.csc ]]; then
