@@ -6,7 +6,7 @@ type "manager" && type "discovery" && type "socksc" && type "sockss" && type "ss
 		/usr/local/go/bin/go install ./...
 }
 echo "Starting SkyWire Manager"
-nohup manager -web-dir /usr/local/go/bin/dist-manager &
+nohup /usr/local/go/bin/manager -web-dir /usr/local/go/bin/dist-manager &
 echo $! > "/root/skywire/${Manager_Pid_FILE}"
 cat "/root/skywire/${Manager_Pid_FILE}"
 echo "SkyWire Manager Done"

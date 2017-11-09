@@ -374,8 +374,9 @@ install_manager()
 {
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
 	cp -r $SRC/packages/script/manager_install.sh $SDCARD/usr/bin/manager_install.sh
-	chmod +x $SDCARD/usr/bin/manager_install.sh
 	cp $SRC/packages/script/manager-rc.local $SDCARD/etc/rc.local
+	chmod +x $SDCARD/usr/bin/manager_install.sh
+	chmod +x $SDCARD/etc/rc.local
 }
 
 install_node()
@@ -408,6 +409,7 @@ set_static_ip()
         address ${NETWORK_ADDRESS}
         netmask ${NETWORK_NETMASK}
         gateway ${NETWORK_GATEWAY}
+				dns-nameservers 8.8.8.8 8.8.4.4
 	EOF
 }
 
