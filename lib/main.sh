@@ -212,6 +212,7 @@ source $SRC/config/boards/${BOARD}.${BOARD_TYPE}
 # 	[[ $KERNEL_TARGET != *$BRANCH* ]] && exit_with_error "Kernel branch not defined for this board" "$BRANCH"
 # fi
 BRANCH="default"
+
 # if [[ $KERNEL_ONLY != yes && -z $RELEASE ]]; then
 # 	options=()
 # 	options+=("jessie" "Debian 8 Jessie")
@@ -222,6 +223,7 @@ BRANCH="default"
 # 	unset options
 # 	[[ -z $RELEASE ]] && exit_with_error "No release selected"
 # fi
+RELEASE="jessie"
 
 # if [[ $KERNEL_ONLY != yes && -z $BUILD_DESKTOP ]]; then
 # 	options=()
@@ -232,7 +234,7 @@ BRANCH="default"
 # 	unset options
 # 	[[ -z $BUILD_DESKTOP ]] && exit_with_error "No option selected"
 # fi
-RELEASE="jessie"
+BUILD_DESKTOP="no"
 # if [[ $KERNEL_ONLY != yes ]]; then
 # 	options=()
 # 	options+=("yes" "Manager")
