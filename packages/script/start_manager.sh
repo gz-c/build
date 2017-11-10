@@ -1,2 +1,2 @@
 #!/bin/bash
-/usr/bin/node_manager.sh yes
+/usr/bin/manager_install.sh yes

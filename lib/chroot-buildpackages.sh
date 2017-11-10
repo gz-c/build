@@ -376,9 +376,11 @@ install_manager()
 {
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
 	cp $SRC/packages/script/manager_install.sh $SDCARD/usr/bin
+	cp $SRC/packages/script/node_install.sh $SDCARD/usr/bin
 	cp $SRC/packages/script/manager-rc.local $SDCARD/etc/rc.local
 	cp $SRC/packages/script/start_manager.sh $SDCARD/root
 	chmod +x $SDCARD/usr/bin/manager_install.sh
+	chmod +x $SDCARD/usr/bin/node_install.sh
 	chmod +x $SDCARD/etc/rc.local
 	chmod +x $SDCARD/root/start_manager.sh
 }
@@ -386,7 +388,7 @@ install_manager()
 install_node()
 {
 	display_alert "Installing Skywire Node" "SkyWire Node" "info"
-	cp -r $SRC/packages/script/node_install.sh $SDCARD/usr/bin/node_install.sh
+	cp $SRC/packages/script/node_install.sh $SDCARD/usr/bin/node_install.sh
 	cp $SRC/packages/script/node-rc.local $SDCARD/etc/rc.local
 	cp $SRC/packages/script/start_node.sh $SDCARD/root
 	chmod +x $SDCARD/usr/bin/node_install.sh
