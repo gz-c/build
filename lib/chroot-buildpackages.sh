@@ -375,35 +375,21 @@ install_manager()
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
 	cp -r $SRC/packages/script/manager_install.sh $SDCARD/usr/bin/manager_install.sh
 	cp $SRC/packages/script/manager-rc.local $SDCARD/etc/rc.local
+	cp $SRC/packages/script/start_manager.sh $SDCARD/root
 	chmod +x $SDCARD/usr/bin/manager_install.sh
 	chmod +x $SDCARD/etc/rc.local
+	chmod +x $SDCARD/root/start_manager.sh
 }
 
 install_node()
 {
 	display_alert "Installing Skywire Node" "SkyWire Node" "info"
-	cat <<-EOF > $SDCARD/usr/bin/node_install.sh
-			#!/bin/bash
-			# SkyWire Install
-			Node_Pid_FILE=node.pid
-			type "manager" && type "discovery" && type "socksc" && type "sockss" && type "sshc" && type "sshs" > /dev/null || {
-					[[ -d /usr/local/go/pkg/linux_arm64/github.com/skycoin ]] && rm -rf /usr/local/go/pkg/linux_arm64/github.com/skycoin
-					cd /usr/local/go/src/github.com/skycoin/skywire/cmd
-					/usr/local/go/bin/go install ./...
-			}
-			echo "Starting SkyWire Node"
-			nohup /usr/local/go/bin/node -connect-manager -manager-address ${MANAGER_ADDRESS}:5998 -discovery-address www.yiqishare.com:5999 -address :5000 &
-			if [[ ! -d /root/skywire-log ]]; then
-				mkdir -p /root/skywire-log
-			fi
-			echo \$! > "\${Node_Pid_FILE}"
-			[[ ! -f /usr/bin/node_install.sh ]] && ln -s /usr/bin/node_install.sh .
-			cat "/root/skywire/${Node_Pid_FILE}"
-			echo "SkyWire Node Done"
-		EOF
+	cp -r $SRC/packages/script/node_install.sh $SDCARD/usr/bin/node_install.sh
 	cp $SRC/packages/script/node-rc.local $SDCARD/etc/rc.local
+	cp $SRC/packages/script/start_node.sh $SDCARD/root
 	chmod +x $SDCARD/usr/bin/node_install.sh
 	chmod +x $SDCARD/etc/rc.local
+	chmod +x $SDCARD/root/start_node.sh
 }
 
 set_static_ip()
