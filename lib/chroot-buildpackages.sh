@@ -386,14 +386,12 @@ install_node()
 			#!/bin/bash
 			# SkyWire Install
 			Node_Pid_FILE=node.pid
-			echo "kill $(cat '\$\{Node_Pid_FILE\}')"
-			pkill -F "\$\{Node_Pid_FILE\}"
 			type "manager" && type "discovery" && type "socksc" && type "sockss" && type "sshc" && type "sshs" > /dev/null || {
 					cd /usr/local/go/src/github.com/skycoin/skywire/cmd
-					go install ./...
+					/usr/local/go/bin/go install ./...
 			}
 			echo "Starting SkyWire Node"
-			node -connect-manager -manager-address ${MANAGER_ADDRESS}:5998 -discovery-address www.yiqishare.com:5999 -address :5000 &
+			/usr/local/go/bin/node -connect-manager -manager-address ${MANAGER_ADDRESS}:5998 -discovery-address www.yiqishare.com:5999 -address :5000 &
 			echo \$\! > "\$\{Node_Pid_FILE\}"
 			cat "\$\{Node_Pid_FILE\}"
 			echo "SkyWire Node Done"
@@ -423,6 +421,7 @@ set_auto_login()
 
 edit_welcome_screen()
 {
+	display_alert "Setting Welcome Screen" "Welcome Screen" "info"
 	cp $SRC/packages/script/10-header $SDCARD/etc/update-motd.d/
 	cp $SRC/packages/script/99-point-to-faq $SDCARD/etc/update-motd.d/
 	rm $SDCARD/etc/update-motd.d/41-armbian-config
