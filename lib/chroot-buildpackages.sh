@@ -381,7 +381,6 @@ install_manager()
 	chmod +x $SDCARD/usr/bin/manager_install.sh
 	chmod +x $SDCARD/etc/rc.local
 	chmod +x $SDCARD/root/start_manager.sh
-	install_node
 }
 
 install_node()
