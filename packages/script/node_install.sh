@@ -4,7 +4,7 @@ Node_Pid_FILE=node.pid
 if [ $1 == "yes" ];then
 	[[ -f /tmp/skywire-pids/${Node_Pid_FILE} ]] && pkill -F "tmp/skywire-pids/${Node_Pid_FILE}"
 fi
-type "manager" && type "discovery" && type "socksc" && type "sockss" && type "sshc" && type "sshs" > /dev/null || {
+command -v "manager" || command -v "discovery" || command -v "socksc" || command -v "sockss" || command -v "sshc" || command -v "sshs" > /dev/null || {
 	  [[ -d /usr/local/go/pkg/linux_arm64/github.com/skycoin ]] && rm -rf /usr/local/go/pkg/linux_arm64/github.com/skycoin
 			  cd /usr/local/go/src/github.com/skycoin/skywire/cmd
 			  /usr/local/go/bin/go install ./...
