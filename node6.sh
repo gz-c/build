@@ -44,7 +44,7 @@ fi
 
 if [[ $EUID != 0 ]]; then
 	display_alert "This script requires root privileges, trying to use sudo" "" "wrn"
-	sudo "$SRC/compile.sh" "$@"
+	sudo "$SRC/node6.sh" "$@"
 	exit $?
 fi
 
