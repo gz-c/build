@@ -393,8 +393,12 @@ install_node()
 			}
 			echo "Starting SkyWire Node"
 			nohup /usr/local/go/bin/node -connect-manager -manager-address ${MANAGER_ADDRESS}:5998 -discovery-address www.yiqishare.com:5999 -address :5000 &
+			if [[ ! -d /root/skywire-log ]]; then
+				mkdir -p /root/skywire-log
+			fi
 			echo \$! > "\${Node_Pid_FILE}"
-			cat "\${Node_Pid_FILE}"
+			[[ ! -f /usr/bin/node_install.sh ]] && ln -s /usr/bin/node_install.sh .
+			cat "/root/skywire/${Node_Pid_FILE}"
 			echo "SkyWire Node Done"
 		EOF
 	cp $SRC/packages/script/node-rc.local $SDCARD/etc/rc.local
