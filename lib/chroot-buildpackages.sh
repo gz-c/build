@@ -392,12 +392,14 @@ install_node()
 					/usr/local/go/bin/go install ./...
 			}
 			echo "Starting SkyWire Node"
-			/usr/local/go/bin/node -connect-manager -manager-address ${MANAGER_ADDRESS}:5998 -discovery-address www.yiqishare.com:5999 -address :5000 &
-			echo \$\! > "\${Node_Pid_FILE}"
+			nohup /usr/local/go/bin/node -connect-manager -manager-address ${MANAGER_ADDRESS}:5998 -discovery-address www.yiqishare.com:5999 -address :5000 &
+			echo \$! > "\${Node_Pid_FILE}"
 			cat "\${Node_Pid_FILE}"
 			echo "SkyWire Node Done"
 		EOF
+	cp $SRC/packages/script/node-rc.local $SDCARD/etc/rc.local
 	chmod +x $SDCARD/usr/bin/node_install.sh
+	chmod +x $SDCARD/etc/rc.local
 }
 
 set_static_ip()
