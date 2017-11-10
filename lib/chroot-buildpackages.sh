@@ -382,21 +382,22 @@ install_manager()
 install_node()
 {
 	display_alert "Installing Skywire Node" "SkyWire Node" "info"
-	cat <<-EOF > $SDCARD/etc/profile.d/node_install.sh
+	cat <<-EOF > $SDCARD/usr/bin/node_install.sh
 			#!/bin/bash
 			# SkyWire Install
 			Node_Pid_FILE=node.pid
 			type "manager" && type "discovery" && type "socksc" && type "sockss" && type "sshc" && type "sshs" > /dev/null || {
+					[[ -d /usr/local/go/pkg/linux_arm64/github.com/skycoin ]] && rm -rf /usr/local/go/pkg/linux_arm64/github.com/skycoin
 					cd /usr/local/go/src/github.com/skycoin/skywire/cmd
 					/usr/local/go/bin/go install ./...
 			}
 			echo "Starting SkyWire Node"
 			/usr/local/go/bin/node -connect-manager -manager-address ${MANAGER_ADDRESS}:5998 -discovery-address www.yiqishare.com:5999 -address :5000 &
-			echo \$\! > "\$\{Node_Pid_FILE\}"
-			cat "\$\{Node_Pid_FILE\}"
+			echo \$\! > "\${Node_Pid_FILE}"
+			cat "\${Node_Pid_FILE}"
 			echo "SkyWire Node Done"
 		EOF
-	chmod +x $SDCARD/etc/profile.d/node_install.sh
+	chmod +x $SDCARD/usr/bin/node_install.sh
 }
 
 set_static_ip()
