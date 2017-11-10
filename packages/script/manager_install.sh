@@ -11,11 +11,11 @@ type "manager" && type "discovery" && type "socksc" && type "sockss" && type "ss
 }
 echo "Starting SkyWire Manager"
 nohup /usr/local/go/bin/manager -web-dir /usr/local/go/bin/dist-manager &
-if [[ ! -d /root/skywire-pids ]]; then
-	mkdir -p /root/skywire-pids
+if [[ ! -d /tmp/skywire-pids ]]; then
+	mkdir -p /tmp/skywire-pids
 fi
-echo $! > "/root/skywire-log/${Manager_Pid_FILE}"
-cat "/root/skywire/${Manager_Pid_FILE}"
+echo $! > "/tmp/skywire-log/${Manager_Pid_FILE}"
+cat "/tmp/skywire/${Manager_Pid_FILE}"
 cd /root
 echo "SkyWire Manager Done"
 

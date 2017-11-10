@@ -11,10 +11,10 @@ type "manager" && type "discovery" && type "socksc" && type "sockss" && type "ss
 }
 echo "Starting SkyWire Node"
 nohup /usr/local/go/bin/node -connect-manager -manager-address 192.168.0.2:5998 -discovery-address www.yiqishare.com:5999 -address :5000 &
-if [[ ! -d /root/skywire-pids ]]; then
-	  mkdir -p /root/skywire-pids
+if [[ ! -d /tmp/skywire-pids ]]; then
+	  mkdir -p /tmp/skywire-pids
 fi
 echo $! > "${Node_Pid_FILE}"
-cat "/root/skywire/${Node_Pid_FILE}"
+cat "/tmp/skywire/${Node_Pid_FILE}"
 cd /root
 echo "SkyWire Node Done"
