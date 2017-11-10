@@ -363,6 +363,8 @@ install_skywire_script()
 {
 	display_alert "Installing Skywire Script" "SkyWire Script" "info"
 	display_alert "Is Manager" "$IS_MANAGER" "info"
+	[[ ! -d $SDCARD/usr/local/go/bin ]] && mkdir -p $SDCARD/usr/local/go/bin
+	cp $SRC/packages/script/update-skywire.sh $SDCARD/usr/local/go/bin
 	if [[ $IS_MANAGER == yes ]]; then
 		install_manager
 	else
@@ -373,7 +375,7 @@ install_skywire_script()
 install_manager()
 {
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
-	cp -r $SRC/packages/script/manager_install.sh $SDCARD/usr/bin/manager_install.sh
+	cp $SRC/packages/script/manager_install.sh $SDCARD/usr/bin
 	cp $SRC/packages/script/manager-rc.local $SDCARD/etc/rc.local
 	cp $SRC/packages/script/start_manager.sh $SDCARD/root
 	chmod +x $SDCARD/usr/bin/manager_install.sh

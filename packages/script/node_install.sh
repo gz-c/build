@@ -2,7 +2,7 @@
 # SkyWire Install
 Node_Pid_FILE=node.pid
 if [ $1 == "yes" ];then
-	pkill -F "${Node_Pid_FILE}"
+	[[ -f /tmp/skywire-pids/${Node_Pid_FILE} ]] && pkill -F "tmp/skywire-pids/${Node_Pid_FILE}"
 fi
 type "manager" && type "discovery" && type "socksc" && type "sockss" && type "sshc" && type "sshs" > /dev/null || {
 	  [[ -d /usr/local/go/pkg/linux_arm64/github.com/skycoin ]] && rm -rf /usr/local/go/pkg/linux_arm64/github.com/skycoin
@@ -14,7 +14,7 @@ nohup /usr/local/go/bin/node -connect-manager -manager-address 192.168.0.2:5998 
 if [[ ! -d /tmp/skywire-pids ]]; then
 	  mkdir -p /tmp/skywire-pids
 fi
-echo $! > "${Node_Pid_FILE}"
-cat "/tmp/skywire/${Node_Pid_FILE}"
+echo $! > "/tmp/skywire-pids/${Node_Pid_FILE}"
+cat "/tmp/skywire-pids/${Node_Pid_FILE}"
 cd /root
 echo "SkyWire Node Done"
