@@ -211,6 +211,7 @@ fi
 NETWORK_ADDRESS="192.168.0.4"
 NETWORK_NETMASK="255.255.255.0"
 NETWORK_GATEWAY="192.168.0.1"
+IMAGE_FILE_NAME="Skywire_Node_Two"
 
 
 source $SRC/lib/configuration.sh
