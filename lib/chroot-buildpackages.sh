@@ -390,10 +390,10 @@ install_other(){
 install_manager()
 {
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
-	cp $SRC/cache/skywire-script/manager_install.sh $SDCARD/usr/bin
-	cp $SRC/cache/skywire-script/node_install.sh $SDCARD/usr/bin
-	cp $SRC/cache/skywire-script/manager-rc.local $SDCARD/etc/rc.local
-	cp $SRC/cache/skywire-script/start_manager.sh $SDCARD/root
+	cp $SRC/cache/source/skywire-script/manager_install.sh $SDCARD/usr/bin
+	cp $SRC/cache/source/skywire-script/node_install.sh $SDCARD/usr/bin
+	cp $SRC/cache/source/skywire-script/manager-rc.local $SDCARD/etc/rc.local
+	cp $SRC/cache/source/skywire-script/start_manager.sh $SDCARD/root
 	chmod +x $SDCARD/usr/bin/manager_install.sh
 	chmod +x $SDCARD/usr/bin/node_install.sh
 	chmod +x $SDCARD/etc/rc.local
@@ -403,9 +403,9 @@ install_manager()
 install_node()
 {
 	display_alert "Installing Skywire Node" "SkyWire Node" "info"
-	cp $SRC/cache/skywire-script/node_install.sh $SDCARD/usr/bin/node_install.sh
-	cp $SRC/cache/skywire-script/node-rc.local $SDCARD/etc/rc.local
-	cp $SRC/cache/skywire-script/start_node.sh $SDCARD/root
+	cp $SRC/cache/source/skywire-script/node_install.sh $SDCARD/usr/bin/node_install.sh
+	cp $SRC/cache/source/skywire-script/node-rc.local $SDCARD/etc/rc.local
+	cp $SRC/cache/source/skywire-script/start_node.sh $SDCARD/root
 	chmod +x $SDCARD/usr/bin/node_install.sh
 	chmod +x $SDCARD/etc/rc.local
 	chmod +x $SDCARD/root/sta rt_node.sh
@@ -428,13 +428,13 @@ set_auto_login()
 	display_alert "Setting Auto Login" "Auto Login" "info"
 	rm $SDCARD/etc/profile.d/check_first_login.sh
 	rm $SDCARD/etc/profile.d/check_first_login_reboot.sh
-	cp -r $SRC/cache/skywire-script/getty@tty1.service.d  $SDCARD/etc/systemd/system
+	cp -r $SRC/cache/source/skywire-script/getty@tty1.service.d  $SDCARD/etc/systemd/system
 }
 
 edit_welcome_screen()
 {
 	display_alert "Setting Welcome Screen" "Welcome Screen" "info"
-	cp $SRC/cache/skywire-script/10-header $SDCARD/etc/update-motd.d/
-	cp $SRC/cache/skywire-script/99-point-to-faq $SDCARD/etc/update-motd.d/
+	cp $SRC/cache/source/skywire-script/10-header $SDCARD/etc/update-motd.d/
+	cp $SRC/cache/source/skywire-script/99-point-to-faq $SDCARD/etc/update-motd.d/
 	rm $SDCARD/etc/update-motd.d/41-armbian-config
 }
