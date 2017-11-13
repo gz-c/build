@@ -207,7 +207,7 @@ IS_MANAGER="yes"
 NETWORK_ADDRESS="192.168.0.2"
 NETWORK_NETMASK="255.255.255.0"
 NETWORK_GATEWAY="192.168.0.1"
-
+IMAGE_FILE_NAME="Skywire_Manager"
 
 source $SRC/lib/configuration.sh
 
