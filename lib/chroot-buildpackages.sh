@@ -232,7 +232,7 @@ chroot_build_packages()
 				fetch_from_repo "$package_repo" "extra/$package_name" "$package_ref"
 
 				eval systemd-nspawn -a -q --capability=CAP_MKNOD -D $target_dir --tmpfs=/root/build --tmpfs=/tmp:mode=777 --bind-ro $SRC/packages/extras-buildpkgs/:/root/overlay \
-					--bind-ro $SRC/cache/sources/extra/:/root/sources /bin/bash -c "/root/build.sh" 2>&1 \
+					--bind-ro $SRC/cache/sourcesss/extra/:/root/sources /bin/bash -c "/root/build.sh" 2>&1 \
 					${PROGRESS_LOG_TO_FILE:+' | tee -a $DEST/debug/buildpkg.log'}
 				if [[ ${PIPESTATUS[0]} -eq 2 ]]; then
 					failed+=("$package_name:$release/$arch")
@@ -351,9 +351,9 @@ install_go()
 install_skywire() {
 	display_alert "Installing Skywire" "SkyWire" "info"
 	mkdir -p $SDCARD/usr/local/go/src/github.com/skycoin
-	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/go/src/github.com/skycoin
-	cp -r $SRC/cache/sources/monitor-web/dist-* $SDCARD/usr/local/go/bin
-	cp -r $SRC/cache/sources/skywire-script $SDCARD/usr/local/
+	cp -r $SRC/cache/sourcesss/skywire $SDCARD/usr/local/go/src/github.com/skycoin
+	cp -r $SRC/cache/sourcesss/monitor-web/dist-* $SDCARD/usr/local/go/bin
+	cp -r $SRC/cache/sourcesss/skywire-script $SDCARD/usr/local/
 	install_skywire_script
 	set_static_ip
 	set_auto_login
@@ -390,10 +390,10 @@ install_other(){
 install_manager()
 {
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
-	cp $SRC/cache/source/skywire-script/manager_install.sh $SDCARD/usr/bin
-	cp $SRC/cache/source/skywire-script/node_install.sh $SDCARD/usr/bin
-	cp $SRC/cache/source/skywire-script/manager-rc.local $SDCARD/etc/rc.local
-	cp $SRC/cache/source/skywire-script/start_manager.sh $SDCARD/root
+	cp $SRC/cache/sourcess/skywire-script/manager_install.sh $SDCARD/usr/bin
+	cp $SRC/cache/sourcess/skywire-script/node_install.sh $SDCARD/usr/bin
+	cp $SRC/cache/sourcess/skywire-script/manager-rc.local $SDCARD/etc/rc.local
+	cp $SRC/cache/sourcess/skywire-script/start_manager.sh $SDCARD/root
 	chmod +x $SDCARD/usr/bin/manager_install.sh
 	chmod +x $SDCARD/usr/bin/node_install.sh
 	chmod +x $SDCARD/etc/rc.local
@@ -403,9 +403,9 @@ install_manager()
 install_node()
 {
 	display_alert "Installing Skywire Node" "SkyWire Node" "info"
-	cp $SRC/cache/source/skywire-script/node_install.sh $SDCARD/usr/bin/node_install.sh
-	cp $SRC/cache/source/skywire-script/node-rc.local $SDCARD/etc/rc.local
-	cp $SRC/cache/source/skywire-script/start_node.sh $SDCARD/root
+	cp $SRC/cache/sourcess/skywire-script/node_install.sh $SDCARD/usr/bin/node_install.sh
+	cp $SRC/cache/sourcess/skywire-script/node-rc.local $SDCARD/etc/rc.local
+	cp $SRC/cache/sourcess/skywire-script/start_node.sh $SDCARD/root
 	chmod +x $SDCARD/usr/bin/node_install.sh
 	chmod +x $SDCARD/etc/rc.local
 	chmod +x $SDCARD/root/sta rt_node.sh
@@ -428,13 +428,13 @@ set_auto_login()
 	display_alert "Setting Auto Login" "Auto Login" "info"
 	rm $SDCARD/etc/profile.d/check_first_login.sh
 	rm $SDCARD/etc/profile.d/check_first_login_reboot.sh
-	cp -r $SRC/cache/source/skywire-script/getty@tty1.service.d  $SDCARD/etc/systemd/system
+	cp -r $SRC/cache/sourcess/skywire-script/getty@tty1.service.d  $SDCARD/etc/systemd/system
 }
 
 edit_welcome_screen()
 {
 	display_alert "Setting Welcome Screen" "Welcome Screen" "info"
-	cp $SRC/cache/source/skywire-script/10-header $SDCARD/etc/update-motd.d/
-	cp $SRC/cache/source/skywire-script/99-point-to-faq $SDCARD/etc/update-motd.d/
+	cp $SRC/cache/sourcess/skywire-script/10-header $SDCARD/etc/update-motd.d/
+	cp $SRC/cache/sourcess/skywire-script/99-point-to-faq $SDCARD/etc/update-motd.d/
 	rm $SDCARD/etc/update-motd.d/41-armbian-config
 }
