@@ -363,11 +363,11 @@ install_skywire() {
 pill_script()
 {
 	local fileName=$1
-	local targetDir=$2
+	local target=$2
 	local isExec=$3	
 	cd $SDCARD/usr/local/skywire-script
-	[[ -f $target_dir/$fileName || -d $target_dir/$fileName ]] && rm -rf $target_dir/$fileName
-	ln -i $fileName $targetDir
+	[[ -f $target || -d $target ]] && rm -rf $target
+	ln -i $fileName $target
 	if [[ $isExec == yes ]];then
 		chmod +x $fileName
 	fi
@@ -386,30 +386,37 @@ install_skywire_script()
 	install_other
 }
 install_other(){
-	pill_script "update-skywire" "${SDCARD}/usr/local/go/bin" "yes"
+	pill_script "update-skywire" "${SDCARD}/usr/local/go/bin/update-skywire" "yes"
 }
 install_manager()
 {
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
-	cp $SRC/cache/sources/skywire-script/manager_install.sh $SDCARD/usr/bin
-	cp $SRC/cache/sources/skywire-script/node_install.sh $SDCARD/usr/bin
-	cp $SRC/cache/sources/skywire-script/manager-rc.local $SDCARD/etc/rc.local
-	cp $SRC/cache/sources/skywire-script/start_manager.sh $SDCARD/root
-	chmod +x $SDCARD/usr/bin/manager_install.sh
-	chmod +x $SDCARD/usr/bin/node_install.sh
-	chmod +x $SDCARD/etc/rc.local
-	chmod +x $SDCARD/root/start_manager.sh
+	# cp $SRC/cache/sources/skywire-script/manager_install.sh $SDCARD/usr/bin
+	# cp $SRC/cache/sources/skywire-script/node_install.sh $SDCARD/usr/bin
+	# cp $SRC/cache/sources/skywire-script/manager-rc.local $SDCARD/etc/rc.local
+	# cp $SRC/cache/sources/skywire-script/start_manager.sh $SDCARD/root
+	# chmod +x $SDCARD/usr/bin/manager_install.sh
+	# chmod +x $SDCARD/usr/bin/node_install.sh
+	# chmod +x $SDCARD/etc/rc.local
+	# chmod +x $SDCARD/root/start_manager.sh
+	pill_script "manager_install.sh" "$SDCARD/usr/bin/manager_install.sh" "yes"
+	pill_script "node_install.sh" "$SDCARD/usr/bin/node_install.sh" "yes"
+	pill_script "manager-rc.local" "$SDCARD/etc/rc.local" "yes"
+	pill_script "start_manager.sh" "$SDCARD/root/start_manager.sh" "yes"
 }
 
 install_node()
 {
 	display_alert "Installing Skywire Node" "SkyWire Node" "info"
-	cp $SRC/cache/sources/skywire-script/node_install.sh $SDCARD/usr/bin/node_install.sh
-	cp $SRC/cache/sources/skywire-script/node-rc.local $SDCARD/etc/rc.local
-	cp $SRC/cache/sources/skywire-script/start_node.sh $SDCARD/root
-	chmod +x $SDCARD/usr/bin/node_install.sh
-	chmod +x $SDCARD/etc/rc.local
-	chmod +x $SDCARD/root/sta rt_node.sh
+	# cp $SRC/cache/sources/skywire-script/node_install.sh $SDCARD/usr/bin/node_install.sh
+	# cp $SRC/cache/sources/skywire-script/node-rc.local $SDCARD/etc/rc.local
+	# cp $SRC/cache/sources/skywire-script/start_node.sh $SDCARD/root
+	# chmod +x $SDCARD/usr/bin/node_install.sh
+	# chmod +x $SDCARD/etc/rc.local
+	# chmod +x $SDCARD/root/start_node.sh
+	pill_script "node_install.sh" "$SDCARD/usr/bin/node_install.sh" "yes"
+	pill_script "node-rc.local" "$SDCARD/etc/rc.local" "yes"
+	pill_script "start_node.sh" "$SDCARD/root/start_node.sh" "yes"
 }
 
 set_static_ip()
