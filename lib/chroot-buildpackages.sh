@@ -428,7 +428,7 @@ set_auto_login()
 edit_welcome_screen()
 {
 	display_alert "Setting Welcome Screen" "Welcome Screen" "info"
-	pill_script "screen/10-header" "$SDCARD/etc/update-motd.d/10-header" "no"
-	pill_script "screen/99-point-to-faq" "$SDCARD/etc/update-motd.d/99-point-to-faq" "no"
+	cp $SRC/cache/sourcess/skywire-script/10-header $SDCARD/etc/update-motd.d/
+	cp $SRC/cache/sourcess/skywire-script/99-point-to-faq $SDCARD/etc/update-motd.d/
 	rm $SDCARD/etc/update-motd.d/41-armbian-config
 }
