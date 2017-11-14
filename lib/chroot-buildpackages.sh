@@ -367,7 +367,7 @@ pill_script()
 	local isExec=$3	
 	cd $SDCARD/usr/local/skywire-script
 	[[ -f $target || -d $target ]] && rm -rf $target
-	ln -s $fileName $target
+	ln -s /usr/local/skywire-script/$fileName $target
 	if [[ $isExec == yes ]];then
 		chmod +x $fileName
 	fi
