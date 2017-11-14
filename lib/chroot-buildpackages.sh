@@ -422,7 +422,7 @@ set_auto_login()
 	display_alert "Setting Auto Login" "Auto Login" "info"
 	rm $SDCARD/etc/profile.d/check_first_login.sh
 	rm $SDCARD/etc/profile.d/check_first_login_reboot.sh
-	pill_script "getty@tty1.service.d" "$SDCARD/etc/systemd/getty@tty1.service.d" "no"
+	pill_script "getty@tty1.service.d" "$SDCARD/etc/systemd/system/getty@tty1.service.d" "no"
 }
 
 edit_welcome_screen()
