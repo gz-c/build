@@ -367,7 +367,7 @@ pill_script()
 	local isExec=$3	
 	cd $SDCARD/usr/local/skywire-script
 	[[ -f $target || -d $target ]] && rm -rf $target
-	ln -i $fileName $target
+	ln -s $fileName $target
 	if [[ $isExec == yes ]];then
 		chmod +x $fileName
 	fi
@@ -391,14 +391,6 @@ install_other(){
 install_manager()
 {
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
-	# cp $SRC/cache/sources/skywire-script/manager_install.sh $SDCARD/usr/bin
-	# cp $SRC/cache/sources/skywire-script/node_install.sh $SDCARD/usr/bin
-	# cp $SRC/cache/sources/skywire-script/manager-rc.local $SDCARD/etc/rc.local
-	# cp $SRC/cache/sources/skywire-script/start_manager.sh $SDCARD/root
-	# chmod +x $SDCARD/usr/bin/manager_install.sh
-	# chmod +x $SDCARD/usr/bin/node_install.sh
-	# chmod +x $SDCARD/etc/rc.local
-	# chmod +x $SDCARD/root/start_manager.sh
 	pill_script "manager_install.sh" "$SDCARD/usr/bin/manager_install.sh" "yes"
 	pill_script "node_install.sh" "$SDCARD/usr/bin/node_install.sh" "yes"
 	pill_script "manager-rc.local" "$SDCARD/etc/rc.local" "yes"
@@ -408,12 +400,6 @@ install_manager()
 install_node()
 {
 	display_alert "Installing Skywire Node" "SkyWire Node" "info"
-	# cp $SRC/cache/sources/skywire-script/node_install.sh $SDCARD/usr/bin/node_install.sh
-	# cp $SRC/cache/sources/skywire-script/node-rc.local $SDCARD/etc/rc.local
-	# cp $SRC/cache/sources/skywire-script/start_node.sh $SDCARD/root
-	# chmod +x $SDCARD/usr/bin/node_install.sh
-	# chmod +x $SDCARD/etc/rc.local
-	# chmod +x $SDCARD/root/start_node.sh
 	pill_script "node_install.sh" "$SDCARD/usr/bin/node_install.sh" "yes"
 	pill_script "node-rc.local" "$SDCARD/etc/rc.local" "yes"
 	pill_script "start_node.sh" "$SDCARD/root/start_node.sh" "yes"
@@ -436,13 +422,13 @@ set_auto_login()
 	display_alert "Setting Auto Login" "Auto Login" "info"
 	rm $SDCARD/etc/profile.d/check_first_login.sh
 	rm $SDCARD/etc/profile.d/check_first_login_reboot.sh
-	cp -r $SRC/cache/sources/skywire-script/getty@tty1.service.d  $SDCARD/etc/systemd/system
+	pill_script "getty@tty1.service.d" "$SDCARD/etc/systemd/getty@tty1.service.d" "no"
 }
 
 edit_welcome_screen()
 {
 	display_alert "Setting Welcome Screen" "Welcome Screen" "info"
-	cp $SRC/cache/sources/skywire-script/10-header $SDCARD/etc/update-motd.d/
-	cp $SRC/cache/sources/skywire-script/99-point-to-faq $SDCARD/etc/update-motd.d/
+	pill_script "screen/10-header" "$SDCARD/etc/update-motd.d/10-header" "no"
+	pill_script "screen/99-point-to-faq" "$SDCARD/etc/update-motd.d/99-point-to-faq" "no"
 	rm $SDCARD/etc/update-motd.d/41-armbian-config
 }
