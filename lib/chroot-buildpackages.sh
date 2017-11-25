@@ -392,9 +392,9 @@ install_manager()
 {
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
 	pill_script "manager_install.sh" "$SDCARD/usr/bin/manager_install.sh" "yes"
-	pill_script "node_install.sh" "$SDCARD/usr/bin/node_install.sh" "yes"
+	pill_script "node_start.sh" "$SDCARD/usr/bin/node_start.sh" "yes"
 	pill_script "manager-rc.local" "$SDCARD/etc/rc.local" "yes"
-	pill_script "start_manager.sh" "$SDCARD/root/start_manager.sh" "yes"
+	pill_script "start_start.sh" "$SDCARD/root/start_start.sh" "yes"
 }
 
 install_node()
