@@ -352,12 +352,21 @@ install_skywire() {
 	display_alert "Installing Skywire" "SkyWire" "info"
 	mkdir -p $SDCARD/usr/local/go/src/github.com/skycoin
 	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/go/src/github.com/skycoin
-	cp -r $SRC/cache/sources/monitor-web/dist-* $SDCARD/usr/local/go/bin
 	cp -r $SRC/cache/sources/skywire-script $SDCARD/usr/local/
+	install_skywire_web
 	install_skywire_script
 	set_static_ip
 	set_auto_login
 	edit_welcome_screen
+}
+
+install_skywire_web() {
+	display_alert "Installing Skywire Web" "SkyWire Web" "info"
+	mkdir -p $SDCARD/usr/local/skywire-static
+	cp -r $SRC/cache/sources/skywire-manager $SDCARD/usr/local/skywire-static/dist-manager
+	cd $SDCARD/usr/local/skywire-static
+	[[ -f /usr/local/go/bin/dist-manager || -d /usr/local/go/bin/dist-manager ]] && rm -rf /usr/local/go/bin/dist-manager
+	ln -s /usr/local/skywire-static/skywire-manager /usr/local/go/bin/dist-manager
 }
 
 pill_script()
@@ -391,18 +400,16 @@ install_other(){
 install_manager()
 {
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
-	pill_script "manager_install.sh" "$SDCARD/usr/bin/manager_install.sh" "yes"
+	pill_script "manager_start.sh" "$SDCARD/usr/bin/manager_start.sh" "yes"
 	pill_script "node_start.sh" "$SDCARD/usr/bin/node_start.sh" "yes"
 	pill_script "manager-rc.local" "$SDCARD/etc/rc.local" "yes"
-	pill_script "start_start.sh" "$SDCARD/root/start_start.sh" "yes"
 }
 
 install_node()
 {
 	display_alert "Installing Skywire Node" "SkyWire Node" "info"
-	pill_script "node_install.sh" "$SDCARD/usr/bin/node_install.sh" "yes"
+	pill_script "node_start.sh" "$SDCARD/usr/bin/node_start.sh" "yes"
 	pill_script "node-rc.local" "$SDCARD/etc/rc.local" "yes"
-	pill_script "start_node.sh" "$SDCARD/root/start_node.sh" "yes"
 }
 
 set_static_ip()
@@ -428,7 +435,7 @@ set_auto_login()
 edit_welcome_screen()
 {
 	display_alert "Setting Welcome Screen" "Welcome Screen" "info"
-	cp $SRC/cache/sourcess/skywire-script/screen/10-header $SDCARD/etc/update-motd.d/
-	cp $SRC/cache/sourcess/skywire-script/screen/99-point-to-faq $SDCARD/etc/update-motd.d/
+	cp $SRC/cache/sources/skywire-script/screen/10-header $SDCARD/etc/update-motd.d/
+	cp $SRC/cache/sources/skywire-script/screen/99-point-to-faq $SDCARD/etc/update-motd.d/
 	rm $SDCARD/etc/update-motd.d/41-armbian-config
 }
