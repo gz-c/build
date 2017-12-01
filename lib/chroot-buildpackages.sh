@@ -354,6 +354,9 @@ install_skywire() {
 	mkdir -p $SDCARD/usr/local/skywire-go/src/github.com/skycoin
 	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/skywire-go/src/github.com/skycoin
 	cp -r $SRC/cache/sources/skywire-script $SDCARD/usr/local/
+	if [ IS_DEV = "yes" ];then
+		install_dev_lib
+	fi
 	install_skywire_web
 	install_skywire_script
 	set_static_ip

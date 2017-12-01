@@ -34,9 +34,9 @@ fi
 [[ ! -f $SRC/config-default.conf ]] && cp $SRC/config/templates/config-example.conf $SRC/config-default.conf
 
 # source build configuration file
-if [[ -n $1 && -f $SRC/config-$1.conf ]]; then
-	display_alert "Using config file" "config-$1.conf" "info"
-	source $SRC/config-$1.conf
+if [[ -n $2 && -f $SRC/config-$2.conf ]]; then
+	display_alert "Using config file" "config-$2.conf" "info"
+	source $SRC/config-$2.conf
 else
 	display_alert "Using config file" "config-default.conf" "info"
 	source $SRC/config-default.conf
@@ -60,9 +60,8 @@ if [[ ! -f $SRC/.ignore_changes ]]; then
 		git checkout ${LIB_TAG:- master}
 	fi
 fi
-echo "Test: ${2}"
 if [[ $BUILD_ALL == yes || $BUILD_ALL == demo ]]; then
 	source $SRC/lib/build-all.sh
 else
-	source $SRC/lib/node1_main.sh
+	source $SRC/lib/node1_main.sh $1
 fi
