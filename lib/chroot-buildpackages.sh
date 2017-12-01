@@ -355,14 +355,14 @@ install_skywire() {
 	mkdir -p $SDCARD/usr/local/skywire-go/bin
 	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/skywire-go/src/github.com/skycoin
 	cp -r $SRC/cache/sources/skywire-script $SDCARD/usr/local/
-	if [ $IS_DEV = "yes" ];then
+	if [[ $IS_DEV == yes ]]; then
 		install_dev_lib
 	fi
 	install_skywire_web
 	install_skywire_script
 	set_static_ip
 	set_auto_login
-	edit_welcome_screen
+	edit_welcome_screenvim 
 }
 
 install_dev_lib(){
@@ -376,8 +376,8 @@ install_skywire_web() {
 	mkdir -p $SDCARD/usr/local/skywire-static
 	cp -r $SRC/cache/sources/skywire-manager $SDCARD/usr/local/skywire-static/dist-manager
 	cd $SDCARD/usr/local/skywire-static
-	[[ -f /usr/local/skywire-go/bin/dist-manager || -d /usr/local/skywire-go/bin/dist-manager ]] && rm -rf /usr/local/skywire-go/bin/dist-manager
-	ln -s /usr/local/skywire-static/skywire-manager /usr/local/skywire-go/bin/dist-manager
+	[[ -f $SDCARD/usr/local/skywire-go/bin/dist-manager || -d $SDCARD/usr/local/skywire-go/bin/dist-manager ]] && rm -rf $SDCARD/usr/local/skywire-go/bin/dist-manager
+	ln -s /usr/local/skywire-static/skywire-manager $SDCARD/usr/local/skywire-go/bin/dist-manager
 }
 
 pill_script()
