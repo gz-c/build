@@ -352,9 +352,10 @@ install_go()
 install_skywire() {
 	display_alert "Installing Skywire" "SkyWire" "info"
 	mkdir -p $SDCARD/usr/local/skywire-go/src/github.com/skycoin
+	mkdir -p $SDCARD/usr/local/skywire-go/bin
 	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/skywire-go/src/github.com/skycoin
 	cp -r $SRC/cache/sources/skywire-script $SDCARD/usr/local/
-	if [ IS_DEV = "yes" ];then
+	if [ $IS_DEV = "yes" ];then
 		install_dev_lib
 	fi
 	install_skywire_web
