@@ -362,7 +362,7 @@ install_skywire() {
 	install_skywire_script
 	set_static_ip
 	set_auto_login
-	edit_welcome_screenvim 
+	edit_welcome_screen 
 }
 
 install_dev_lib(){
