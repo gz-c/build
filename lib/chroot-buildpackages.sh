@@ -342,7 +342,8 @@ install_go()
 	if [[ ! -f $SDCARD/etc/profile.d/go-env.sh ]]; then
 	cat <<-EOF > $SDCARD/etc/profile.d/go-env.sh
 	# GO ENV
-	GOPATH=/usr/local/go
+	GOROOT=/usr/local/go
+	GOPATH=/usr/local/skywire-go
 	PATH=$PATH:/usr/local/go/bin
 	EOF
 	fi
@@ -350,8 +351,8 @@ install_go()
 
 install_skywire() {
 	display_alert "Installing Skywire" "SkyWire" "info"
-	mkdir -p $SDCARD/usr/local/go/src/github.com/skycoin
-	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/go/src/github.com/skycoin
+	mkdir -p $SDCARD/usr/local/skywire-go/src/github.com/skycoin
+	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/skywire-go/src/github.com/skycoin
 	cp -r $SRC/cache/sources/skywire-script $SDCARD/usr/local/
 	install_skywire_web
 	install_skywire_script
@@ -360,13 +361,19 @@ install_skywire() {
 	edit_welcome_screen
 }
 
+install_dev_lib(){
+	display_alert "Installing Skywire Dev" "SkyWire Dev" "info"
+	rm -rf $SDCARD/usr/local/skywire-go/src/github.com/skycoin/skywire/vendor/github.com/skycoin/net
+	cp -r $SRC/cache/sources/net $SDCARD/usr/local/skywire-go/src/github.com/skycoin/skywire/vendor/github.com/skycoin
+}
+
 install_skywire_web() {
 	display_alert "Installing Skywire Web" "SkyWire Web" "info"
 	mkdir -p $SDCARD/usr/local/skywire-static
 	cp -r $SRC/cache/sources/skywire-manager $SDCARD/usr/local/skywire-static/dist-manager
 	cd $SDCARD/usr/local/skywire-static
-	[[ -f /usr/local/go/bin/dist-manager || -d /usr/local/go/bin/dist-manager ]] && rm -rf /usr/local/go/bin/dist-manager
-	ln -s /usr/local/skywire-static/skywire-manager /usr/local/go/bin/dist-manager
+	[[ -f /usr/local/skywire-go/bin/dist-manager || -d /usr/local/skywire-go/bin/dist-manager ]] && rm -rf /usr/local/skywire-go/bin/dist-manager
+	ln -s /usr/local/skywire-static/skywire-manager /usr/local/skywire-go/bin/dist-manager
 }
 
 pill_script()
@@ -386,7 +393,7 @@ install_skywire_script()
 {
 	display_alert "Installing Skywire Script" "SkyWire Script" "info"
 	display_alert "Is Manager" "$IS_MANAGER" "info"
-	[[ ! -d $SDCARD/usr/local/go/bin ]] && mkdir -p $SDCARD/usr/local/go/bin
+	[[ ! -d $SDCARD/usr/local/skywire-go/bin ]] && mkdir -p $SDCARD/usr/local/skywire-go/bin
 	if [[ $IS_MANAGER == yes ]]; then
 		install_manager
 	else
@@ -395,7 +402,7 @@ install_skywire_script()
 	install_other
 }
 install_other(){
-	pill_script "update-skywire" "${SDCARD}/usr/local/go/bin/update-skywire" "yes"
+	pill_script "update-skywire" "${SDCARD}/usr/local/skywire-go/bin/update-skywire" "yes"
 }
 install_manager()
 {

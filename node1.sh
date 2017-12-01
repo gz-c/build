@@ -60,7 +60,7 @@ if [[ ! -f $SRC/.ignore_changes ]]; then
 		git checkout ${LIB_TAG:- master}
 	fi
 fi
-
+echo "Test: ${2}"
 if [[ $BUILD_ALL == yes || $BUILD_ALL == demo ]]; then
 	source $SRC/lib/build-all.sh
 else
