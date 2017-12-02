@@ -64,14 +64,6 @@ for i in "$@"; do
 	fi
 done
 
-if [[ $BETA == yes ]]; then
-	IMAGE_TYPE=nightly
-elif [[ $BETA == no && $BUILD_ALL == yes && -n $GPG_PASS ]]; then
-	IMAGE_TYPE=stable
-else
-	IMAGE_TYPE=user-built
-fi
-
 if [[ $PROGRESS_DISPLAY == none ]]; then
 	OUTPUT_VERYSILENT=yes
 elif [[ $PROGRESS_DISPLAY == dialog ]]; then
@@ -80,7 +72,6 @@ fi
 if [[ $PROGRESS_LOG_TO_FILE != yes ]]; then unset PROGRESS_LOG_TO_FILE; fi
 
 SHOW_WARNING=yes
-CAN_BUILD_STRETCH=yes
 
 if [[ $USE_CCACHE != no ]]; then
 	CCACHE=ccache
@@ -113,7 +104,6 @@ if [[ -z $BOARD ]]; then
 	WIP_STATE=supported
 	WIP_BUTTON='CSC/WIP/EOS'
 	STATE_DESCRIPTION=' - Officially supported boards'
-	[[ $EXPERT = yes ]] && DIALOG_EXTRA="--extra-button"
 	temp_rc=$(mktemp)
 	while true; do
 		options=()
@@ -144,9 +134,6 @@ if [[ -z $BOARD ]]; then
 		else
 			echo > $temp_rc
 		fi
-		# BOARD=$(DIALOGRC=$temp_rc dialog --stdout --title "Choose a board" --backtitle "$backtitle" --scrollbar --colors \
-		# 	--extra-label "Show $WIP_BUTTON" $DIALOG_EXTRA --menu "Select the target board. Displaying:\n$STATE_DESCRIPTION" \
-		# 	$TTY_Y $TTY_X $(($TTY_Y - 8)) "${options[@]}")
 		BOARD="orangepiprime"
 		STATUS=$?
 		display_alert "STATUS" "$STATUS" "info"
@@ -180,6 +167,7 @@ elif [[ -f $SRC/config/boards/${BOARD}.eos ]]; then
 fi
 
 source $SRC/config/boards/${BOARD}.${BOARD_TYPE}
+LINUXFAMILY="${BOARDFAMILY}"
 
 [[ -z $KERNEL_TARGET ]] && exit_with_error "Board configuration does not define valid kernel config"
 
@@ -243,6 +231,14 @@ if [[ $IGNORE_UPDATES != yes ]]; then
 	fetch_from_repo "https://github.com/MarvellEmbeddedProcessors/A3700-utils-marvell" "marvell-tools" "branch:A3700_utils-armada-17.10"
 	fetch_from_repo "https://github.com/armbian/odroidc2-blobs" "odroidc2-blobs" "branch:master"
 	fetch_from_repo "https://github.com/vyloy/skywire" "skywire" "branch:master"
+fi
+
+if [[ $BETA == yes ]]; then
+	IMAGE_TYPE=nightly
+elif [[ $BETA == no && $BUILD_ALL == yes && -n $GPG_PASS ]]; then
+	IMAGE_TYPE=stable
+else
+	IMAGE_TYPE=user-built
 fi
 
 compile_sunxi_tools

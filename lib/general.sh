@@ -456,16 +456,10 @@ prepare_host()
 {
 	display_alert "Preparing" "host" "info"
 
-	if [[ $(dpkg --print-architecture) == arm* ]]; then
+	if [[ $(dpkg --print-architecture) != amd64 ]]; then
 		display_alert "Please read documentation to set up proper compilation environment"
 		display_alert "http://www.armbian.com/using-armbian-tools/"
-		exit_with_error "Running this tool on board itself is not supported"
-	fi
-
-	if [[ $(dpkg --print-architecture) == i386 ]]; then
-		display_alert "Please read documentation to set up proper compilation environment"
-		display_alert "http://www.armbian.com/using-armbian-tools/"
-		display_alert "Running this tool on non-x64 build host in not supported officially" "" "wrn"
+		exit_with_error "Running this tool on non x86-x64 build host in not supported"
 	fi
 
 	# need lsb_release to decide what to install
@@ -580,15 +574,13 @@ prepare_host()
 		"https://dl.armbian.com/_toolchains/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu.tar.xz"
 		"https://dl.armbian.com/_toolchains/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabi.tar.xz"
 		"https://dl.armbian.com/_toolchains/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf.tar.xz"
-		"https://dl.armbian.com/_toolchains/gcc-linaro-5.4.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz"
-		"https://dl.armbian.com/_toolchains/gcc-linaro-5.4.1-2017.05-x86_64_arm-linux-gnueabi.tar.xz"
-		"https://dl.armbian.com/_toolchains/gcc-linaro-5.4.1-2017.05-x86_64_arm-linux-gnueabihf.tar.xz"
-		"https://dl.armbian.com/_toolchains/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf.tar.xz"
-		"https://dl.armbian.com/_toolchains/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz"
-		"https://dl.armbian.com/_toolchains/gcc-linaro-6.4.1-2017.08-x86_64_arm-linux-gnueabihf.tar.xz"
-		"https://dl.armbian.com/_toolchains/gcc-linaro-6.4.1-2017.08-x86_64_aarch64-linux-gnu.tar.xz"
-		"https://dl.armbian.com/_toolchains/gcc-linaro-7.1.1-2017.08-x86_64_aarch64-linux-gnu.tar.xz"
-		"https://dl.armbian.com/_toolchains/gcc-linaro-7.1.1-2017.08-x86_64_arm-linux-gnueabihf.tar.xz"
+		"https://dl.armbian.com/_toolchains/gcc-linaro-5.5.0-2017.10-x86_64_aarch64-linux-gnu.tar.xz"
+		"https://dl.armbian.com/_toolchains/gcc-linaro-5.5.0-2017.10-x86_64_arm-linux-gnueabi.tar.xz"
+		"https://dl.armbian.com/_toolchains/gcc-linaro-5.5.0-2017.10-x86_64_arm-linux-gnueabihf.tar.xz"
+		"https://dl.armbian.com/_toolchains/gcc-linaro-6.4.1-2017.11-x86_64_arm-linux-gnueabihf.tar.xz"
+		"https://dl.armbian.com/_toolchains/gcc-linaro-6.4.1-2017.11-x86_64_aarch64-linux-gnu.tar.xz"
+		"https://dl.armbian.com/_toolchains/gcc-linaro-7.2.1-2017.11-x86_64_aarch64-linux-gnu.tar.xz"
+		"https://dl.armbian.com/_toolchains/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf.tar.xz"
 		)
 
 	for toolchain in ${toolchains[@]}; do
@@ -665,7 +657,7 @@ download_toolchain()
 	fi
 	if [[ $verified == true ]]; then
 		display_alert "Extracting"
-		tar --overwrite -xf $filename && touch $SRC/cache/toolchains/$dirname/.download-complete
+		tar --no-same-owner --overwrite -xf $filename && touch $SRC/cache/toolchains/$dirname/.download-complete
 		display_alert "Download complete" "" "info"
 	else
 		display_alert "Verification failed" "" "wrn"
