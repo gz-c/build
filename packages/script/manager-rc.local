@@ -1,4 +1,0 @@
-#!/bin/sh -e
-/usr/bin/manager_install.sh
-/usr/bin/node_install.sh
-exit 0
