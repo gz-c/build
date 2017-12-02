@@ -342,9 +342,9 @@ install_go()
 	if [[ ! -f $SDCARD/etc/profile.d/go-env.sh ]]; then
 	cat <<-EOF > $SDCARD/etc/profile.d/go-env.sh
 	# GO ENV
-	GOROOT=/usr/local/go
-	GOPATH=/usr/local/skywire-go
-	PATH=$PATH:/usr/local/go/bin
+	export GOROOT=/usr/local/go
+	export GOPATH=/usr/local/skywire-go
+	export PATH=$PATH:/usr/local/go/bin:/usr/local/skywire-go/bin
 	EOF
 	fi
 }
