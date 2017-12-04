@@ -368,7 +368,7 @@ install_skywire() {
 install_dev_lib(){
 	display_alert "Installing Skywire Dev" "SkyWire Dev" "info"
 	rm -rf $SDCARD/usr/local/skywire-go/src/github.com/skycoin/skywire/vendor/github.com/skycoin/net
-	cp -r $SRC/cache/sources/net $SDCARD/usr/local/skywire-go/src/github.com/skycoin/skywire/vendor/github.com/skycoin
+	cp -r $SRC/cache/sources/net $SDCARD/usr/local/skywire-go/src/github.com/skycoin
 }
 
 install_skywire_web() {
