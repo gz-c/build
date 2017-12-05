@@ -243,8 +243,6 @@ if [[ $IGNORE_UPDATES != yes ]]; then
 	fetch_from_repo "https://github.com/armbian/odroidc2-blobs" "odroidc2-blobs" "branch:master"
 	fetch_from_repo "https://github.com/vyloy/skywire" "skywire" "branch:master"
 	fetch_from_repo "https://github.com/vyloy/net" "net" "branch:master"
-	fetch_from_repo "https://github.com/feifeiwoye/script" "skywire-script" "branch:master"
-	fetch_from_repo "https://github.com/feifeiwoye/skywire-manager" "skywire-manager" "branch:master"
 fi
 
 compile_sunxi_tools

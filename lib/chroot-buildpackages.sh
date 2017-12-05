@@ -343,22 +343,22 @@ install_go()
 	cat <<-EOF > $SDCARD/etc/profile.d/go-env.sh
 	# GO ENV
 	export GOROOT=/usr/local/go
-	export GOPATH=/usr/local/skywire-go
-	export PATH=$PATH:/usr/local/go/bin:/usr/local/skywire-go/bin
+	export GOPATH=/usr/local/skywire/go
+	export PATH=$PATH:/usr/local/go/bin:/usr/local/skywire/go/bin
 	EOF
 	fi
 }
 
 install_skywire() {
 	display_alert "Installing Skywire" "SkyWire" "info"
-	mkdir -p $SDCARD/usr/local/skywire-go/src/github.com/skycoin
-	mkdir -p $SDCARD/usr/local/skywire-go/bin
-	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/skywire-go/src/github.com/skycoin
-	cp -r $SRC/cache/sources/skywire-script $SDCARD/usr/local/
+	mkdir -p $SDCARD/usr/local/skywire/go/src/github.com/skycoin
+	mkdir -p $SDCARD/usr/local/skywire/go/bin
+	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/skywire/go/src/github.com/skycoin
+	cp -r $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/static/script $SDCARD/usr/local/
 	if [[ $IS_DEV == yes ]]; then
 		install_dev_lib
 	fi
-	install_skywire_web
+	# install_skywire_web
 	install_skywire_script
 	set_static_ip
 	set_auto_login
@@ -367,27 +367,27 @@ install_skywire() {
 
 install_dev_lib(){
 	display_alert "Installing Skywire Dev" "SkyWire Dev" "info"
-	rm -rf $SDCARD/usr/local/skywire-go/src/github.com/skycoin/skywire/vendor/github.com/skycoin/net
-	cp -r $SRC/cache/sources/net $SDCARD/usr/local/skywire-go/src/github.com/skycoin
+	rm -rf $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/vendor/github.com/skycoin/net
+	cp -r $SRC/cache/sources/net $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/vendor/github.com/skycoin
 }
 
-install_skywire_web() {
-	display_alert "Installing Skywire Web" "SkyWire Web" "info"
-	mkdir -p $SDCARD/usr/local/skywire-static
-	cp -r $SRC/cache/sources/skywire-manager $SDCARD/usr/local/skywire-static/dist-manager
-	cd $SDCARD/usr/local/skywire-static
-	[[ -f $SDCARD/usr/local/skywire-go/bin/dist-manager || -d $SDCARD/usr/local/skywire-go/bin/dist-manager ]] && rm -rf $SDCARD/usr/local/skywire-go/bin/dist-manager
-	ln -s /usr/local/skywire-static/skywire-manager $SDCARD/usr/local/skywire-go/bin/dist-manager
-}
+# install_skywire_web() {
+# 	display_alert "Installing Skywire Web" "SkyWire Web" "info"
+# 	mkdir -p $SDCARD/usr/local/skywire-static
+# 	cp -r $SRC/cache/sources/skywire-manager $SDCARD/usr/local/skywire-static
+# 	cd $SDCARD/usr/local/skywire-static
+# 	[[ -f $SDCARD/usr/local/skywire/go/bin/dist-manager || -d $SDCARD/usr/local/skywire/go/bin/dist-manager ]] && rm -rf $SDCARD/usr/local/skywire/go/bin/dist-manager
+# 	ln -s /usr/local/skywire-static/skywire-manager $SDCARD/usr/local/skywire/go/bin/dist-manager
+# }
 
 pill_script()
 {
 	local fileName=$1
 	local target=$2
 	local isExec=$3	
-	cd $SDCARD/usr/local/skywire-script
+	cd $SRC/cache/sources/skywire $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/static/script
 	[[ -f $target || -d $target ]] && rm -rf $target
-	ln -s /usr/local/skywire-script/$fileName $target
+	ln -s $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/static/script/$fileName $target
 	if [[ $isExec == yes ]];then
 		chmod +x $fileName
 	fi
@@ -397,29 +397,29 @@ install_skywire_script()
 {
 	display_alert "Installing Skywire Script" "SkyWire Script" "info"
 	display_alert "Is Manager" "$IS_MANAGER" "info"
-	[[ ! -d $SDCARD/usr/local/skywire-go/bin ]] && mkdir -p $SDCARD/usr/local/skywire-go/bin
 	if [[ $IS_MANAGER == yes ]]; then
 		install_manager
 	else
 		install_node
 	fi
-	install_other
+	install_update_tool
 }
-install_other(){
-	pill_script "update-skywire" "${SDCARD}/usr/local/skywire-go/bin/update-skywire" "yes"
+
+install_update_tool(){
+	pill_script "update-skywire" "${SDCARD}/usr/local/skywire/go/bin/update-skywire" "yes"
 }
 install_manager()
 {
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
-	pill_script "manager_start.sh" "$SDCARD/usr/bin/manager_start.sh" "yes"
-	pill_script "node_start.sh" "$SDCARD/usr/bin/node_start.sh" "yes"
+	pill_script "manager_start.sh" "$SDCARD/usr/local/skywire/go/bin/manager_start.sh" "yes"
+	pill_script "node_start.sh" "$SDCARD/usr/local/skywire/go/bin/node_start.sh" "yes"
 	pill_script "manager-rc.local" "$SDCARD/etc/rc.local" "yes"
 }
 
 install_node()
 {
 	display_alert "Installing Skywire Node" "SkyWire Node" "info"
-	pill_script "node_start.sh" "$SDCARD/usr/bin/node_start.sh" "yes"
+	pill_script "node_start.sh" "$SDCARD/usr/local/skywire/go/bin/node_start.sh" "yes"
 	pill_script "node-rc.local" "$SDCARD/etc/rc.local" "yes"
 }
 
@@ -446,7 +446,7 @@ set_auto_login()
 edit_welcome_screen()
 {
 	display_alert "Setting Welcome Screen" "Welcome Screen" "info"
-	cp $SRC/cache/sources/skywire-script/screen/10-header $SDCARD/etc/update-motd.d/
-	cp $SRC/cache/sources/skywire-script/screen/99-point-to-faq $SDCARD/etc/update-motd.d/
+	cp $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/static/script/screen/10-header $SDCARD/etc/update-motd.d/
+	cp $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/static/script/screen/99-point-to-faq $SDCARD/etc/update-motd.d/
 	rm $SDCARD/etc/update-motd.d/41-armbian-config
 }
