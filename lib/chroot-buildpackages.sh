@@ -354,7 +354,7 @@ install_skywire() {
 	mkdir -p $SDCARD/usr/local/skywire/go/src/github.com/skycoin
 	mkdir -p $SDCARD/usr/local/skywire/go/bin
 	cp -r $SRC/cache/sources/skywire $SDCARD/usr/local/skywire/go/src/github.com/skycoin
-	cp -r $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/static/script $SDCARD/usr/local/
+	# cp -r $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/static/script $SDCARD/usr/local/
 	if [[ $IS_DEV == yes ]]; then
 		install_dev_lib
 	fi
@@ -385,7 +385,7 @@ pill_script()
 	local fileName=$1
 	local target=$2
 	local isExec=$3	
-	cd $SRC/cache/sources/skywire $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/static/script
+	cd $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/static/script
 	[[ -f $target || -d $target ]] && rm -rf $target
 	ln -s $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/static/script/$fileName $target
 	if [[ $isExec == yes ]];then
@@ -411,8 +411,8 @@ install_update_tool(){
 install_manager()
 {
 	display_alert "Installing Skywire Manager" "SkyWire Manager" "info"
-	pill_script "manager_start.sh" "$SDCARD/usr/local/skywire/go/bin/manager_start.sh" "yes"
-	pill_script "node_start.sh" "$SDCARD/usr/local/skywire/go/bin/node_start.sh" "yes"
+	pill_script "manager_start" "$SDCARD/usr/local/skywire/go/bin/manager_start.sh" "yes"
+	pill_script "node_start" "$SDCARD/usr/local/skywire/go/bin/node_start.sh" "yes"
 	pill_script "manager-rc.local" "$SDCARD/etc/rc.local" "yes"
 }
 
