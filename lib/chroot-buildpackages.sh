@@ -387,7 +387,7 @@ pill_script()
 	local isExec=$3	
 	cd $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/static/script
 	[[ -f $target || -d $target ]] && rm -rf $target
-	ln -s $SDCARD/usr/local/skywire/go/src/github.com/skycoin/skywire/static/script/$fileName $target
+	ln -s /usr/local/skywire/go/src/github.com/skycoin/skywire/static/script/$fileName $target
 	if [[ $isExec == yes ]];then
 		chmod +x $fileName
 	fi
