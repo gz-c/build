@@ -419,7 +419,7 @@ install_manager()
 install_node()
 {
 	display_alert "Installing Skywire Node" "SkyWire Node" "info"
-	pill_script "node_start.sh" "$SDCARD/usr/local/skywire/go/bin/node_start.sh" "yes"
+	pill_script "node_start" "$SDCARD/usr/local/skywire/go/bin/node_start.sh" "yes"
 	pill_script "node-rc.local" "$SDCARD/etc/rc.local" "yes"
 }
 
@@ -431,7 +431,7 @@ set_static_ip()
         address ${NETWORK_ADDRESS}
         netmask ${NETWORK_NETMASK}
         gateway ${NETWORK_GATEWAY}
-				dns-nameservers 8.8.8.8 8.8.4.4
+				dns-nameservers 192.168.0.1 8.8.8.8
 	EOF
 }
 

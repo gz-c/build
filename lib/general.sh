@@ -670,10 +670,10 @@ download_go() {
 	cd $SRC/cache/software
 	if [[ ! -d $SRC/cache/software/go ]]; then
 		display_alert "Downloading"
-		curl -Lf --progress-bar https://redirector.gvt1.com/edgedl/go/go1.9.2.linux-arm64.tar.gz -o go1.9.2.linux-arm64.tar.gz
+		curl -Lf --progress-bar http://skywire.oss-cn-hongkong.aliyuncs.com/go1.10.linux-arm64.tar.gz -o go1.10.linux-arm64.tar.gz
 		display_alert "Extracting"
-		tar zxf go1.9.2.linux-arm64.tar.gz
-		rm go1.9.2.linux-arm64.tar.gz
+		tar zxf go1.10.linux-arm64.tar.gz
+		rm go1.10.linux-arm64.tar.gz
 		display_alert "Download complete" "Golang" "info"
 	fi
 }
