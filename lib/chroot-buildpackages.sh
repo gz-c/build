@@ -367,7 +367,7 @@ install_skywire() {
 }
 install_skywire_exec() {
 	display_alert "Installing Skywire Exec" "Skywire Exec" "info"
-	cp -r $SRC/cache/software/skywireExec $SDCARD/usr/local/skywire/go/bin
+	cp -r $SRC/cache/software/skywireExec/* $SDCARD/usr/local/skywire/go/bin
 }
 
 install_dev_lib(){
