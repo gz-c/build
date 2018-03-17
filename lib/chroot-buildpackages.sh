@@ -359,10 +359,15 @@ install_skywire() {
 		install_dev_lib
 	fi
 	# install_skywire_web
+	install_skywire_exec
 	install_skywire_script
 	set_static_ip
 	set_auto_login
 	edit_welcome_screen 
+}
+install_skywire_exec() {
+	display_alert "Installing Skywire Exec" "Skywire Exec" "info"
+	cp -r $SRC/cache/software/skywireExec $SDCARD/usr/local/skywire/go/bin
 }
 
 install_dev_lib(){
