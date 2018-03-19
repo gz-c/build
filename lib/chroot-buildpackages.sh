@@ -358,10 +358,11 @@ install_skywire() {
 	if [[ $IS_DEV == yes ]]; then
 		install_dev_lib
 	fi
-	# install_skywire_web
 	install_skywire_exec
-	install_skywire_script
-	set_static_ip
+	if [[ $IS_PURE == no ]]; then
+		install_skywire_script
+		set_static_ip
+	fi
 	set_auto_login
 	edit_welcome_screen 
 }
