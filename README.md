@@ -1,6 +1,6 @@
 # Skyminer Build Image
 
-The image is based upon https://github.com/armbian/build
+The image is based upon https://github.com/gz-c/build
 
 Getting started:
 
