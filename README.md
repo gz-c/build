@@ -1,11 +1,11 @@
 # Skyminer Build Image
 
-The image is based upon https://github.com/gz-c/build
+The image is based upon https://github.com/armbian/build
 
 Getting started:
 
 ```sh
-git clone https://github.com/feifeiwoye/build
+git clone https://github.com/gz-c/build
 cd build  
 ./manager.sh
 ./node1.sh
