@@ -1,9 +1,36 @@
-# Armbian
+# Skyminer Build Image
+
+The image is based upon https://github.com/armbian/build
+
+Getting started:
+
+```sh
+git clone https://github.com/feifeiwoye/build
+cd build  
+./manager.sh
+./node1.sh
+./node2.sh
+```
+
+Edit Skywire environment:
+
+```sh
+cd build
+vim lib/chroot-buildpackages.sh
+```
+
+Edit IP:
+
+```sh
+vim *_main.sh
+```
+
+## Armbian
 
 Ubuntu and Debian images for ARM based single-board computers
 https://www.armbian.com
 
-## How to build my own image or kernel?
+### How to build my own image or kernel?
 
 Supported build environments:
 
@@ -27,11 +54,11 @@ You will be prompted with a selection menu for a build option, a board name, a k
 
 Build process uses caching for the compilation and the debootstrap process, so consecutive runs with similar settings will be much faster.
 
-## Reporting issues
+### Reporting issues
 
 Please read [this](https://github.com/igorpecovnik/lib/blob/master/.github/ISSUE_TEMPLATE.md) notice first before opening an issue.
 
-## More info:
+### More info:
 
 - [Documentation](https://docs.armbian.com/Developer-Guide_Build-Preparation/)
 - [Prebuilt images](https://www.armbian.com/download/)
